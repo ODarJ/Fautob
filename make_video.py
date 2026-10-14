@@ -1,6 +1,17 @@
 #!/usr/bin/env python3
-"""ObetyPl 60-second scenic video generator: Groq plans scenes, Pexels supplies footage."""
-import json, os, random, re, shutil, subprocess, sys, time
+"""ObetyPl 60-second vertical scenic video generator for Facebook Reels.
+
+Groq plans scenes; Pexels supplies real video footage only (never photos).
+Output: 1080x1920 (9:16), 30 fps, \~60 s, H.264 + AAC.
+"""
+import json
+import os
+import random
+import re
+import shutil
+import subprocess
+import sys
+import time
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -16,7 +27,7 @@ PEXELS_KEY = os.getenv("PEXELS_API_KEY", "").strip()
 INPUT_SCENERY = os.getenv("INPUT_SCENERY", "").strip()
 GROQ_URL = "https://api.groq.com/openai/v1/chat/completions"
 PEXELS_URL = "https://api.pexels.com/videos/search"
-DURATION, WIDTH, HEIGHT, FPS = 60, 1920, 1080, 30
+DURATION, WIDTH, HEIGHT, FPS = 60, 1080, 1920, 30  # 9:16 vertical for Reels
 
 MUSIC = {
     "silent descent": "01 — Silent Descent.mp3",
@@ -42,7 +53,13 @@ def call_groq(prompt, retries=4):
     payload = {
         "model": GROQ_MODEL,
         "messages": [
-            {"role": "system", "content": "You plan cinematic nature videos. Return valid JSON only."},
+            {
+                "role": "system",
+                "content": (
+                    "You plan cinematic vertical nature videos for Facebook Reels. "
+                    "Return valid JSON only."
+                ),
+            },
             {"role": "user", "content": prompt},
         ],
         "temperature": 0.8,
@@ -51,7 +68,9 @@ def call_groq(prompt, retries=4):
     last_error = "Unknown error"
     for attempt in range(1, retries + 1):
         try:
-            response = requests.post(GROQ_URL, headers=headers, json=payload, timeout=(20, 90))
+            response = requests.post(
+                GROQ_URL, headers=headers, json=payload, timeout=(20, 90)
+            )
             if response.status_code in (429, 500, 502, 503, 504):
                 last_error = f"Groq HTTP {response.status_code}: {response.text[:300]}"
                 if attempt < retries:
@@ -73,19 +92,41 @@ def call_groq(prompt, retries=4):
 
 
 def fallback_plan():
-    idea = INPUT_SCENERY or random.choice([
-        "misty green mountains at sunrise", "quiet tropical beach at golden hour",
-        "peaceful forest after rain", "lake reflecting distant mountains",
-        "rolling green hills beneath dramatic clouds", "waterfall in a lush forest",
-    ])
+    idea = INPUT_SCENERY or random.choice(
+        [
+            "misty green mountains at sunrise",
+            "quiet tropical beach at golden hour",
+            "peaceful forest after rain",
+            "lake reflecting distant mountains",
+            "rolling green hills beneath dramatic clouds",
+            "waterfall in a lush forest",
+        ]
+    )
     return {
-        "title": idea.title(), "mood": "peaceful, cinematic, reflective",
+        "title": idea.title(),
+        "mood": "peaceful, cinematic, reflective",
         "music_track": random.choice(list(MUSIC)),
         "scenes": [
-            {"description": f"Wide establishing view of {idea}, soft natural light", "query": idea, "seconds": 15},
-            {"description": f"Atmospheric nature view of {idea}, gentle movement", "query": f"{idea} cinematic nature", "seconds": 15},
-            {"description": f"Detailed scenic landscape related to {idea}", "query": f"{idea} scenic landscape", "seconds": 15},
-            {"description": f"Wide closing landscape of {idea}, warm soft light", "query": f"{idea} sunset nature", "seconds": 15},
+            {
+                "description": f"Vertical establishing view of {idea}, soft natural light",
+                "query": idea,
+                "seconds": 15,
+            },
+            {
+                "description": f"Atmospheric vertical nature view of {idea}, gentle movement",
+                "query": f"{idea} cinematic nature",
+                "seconds": 15,
+            },
+            {
+                "description": f"Detailed scenic landscape related to {idea}",
+                "query": f"{idea} scenic landscape",
+                "seconds": 15,
+            },
+            {
+                "description": f"Vertical closing landscape of {idea}, warm soft light",
+                "query": f"{idea} sunset nature",
+                "seconds": 15,
+            },
         ],
     }
 
@@ -93,7 +134,8 @@ def fallback_plan():
 def plan_scenes():
     scenery = INPUT_SCENERY or "Choose a beautiful natural landscape."
     prompt = f"""
-Plan a 60-second 16:9 cinematic scenic nature video for a page named ObetyPl.
+Plan a 60-second vertical 9:16 cinematic scenic nature video for Facebook Reels
+for a page named ObetyPl.
 Scenery request: {scenery}
 Return JSON with:
 "title": short title (max 7 words),
@@ -101,6 +143,7 @@ Return JSON with:
 "music_track": exactly one of {list(MUSIC.keys())},
 "scenes": exactly 4 objects, each containing "description", "query" (short Pexels video search query), "seconds": 15.
 Use realistic natural landscapes, no people, no text or logos in footage, coherent peaceful cinematic mood.
+Prefer scenes that work well in portrait/vertical framing.
 Return JSON only, no markdown.
 """
     try:
@@ -112,11 +155,13 @@ Return JSON only, no markdown.
         for s in scenes:
             if not isinstance(s, dict) or not str(s.get("query", "")).strip():
                 raise ValueError("A scene has no search query")
-            clean.append({
-                "description": str(s.get("description", s["query"])).strip()[:500],
-                "query": str(s["query"]).strip()[:180],
-                "seconds": 15,
-            })
+            clean.append(
+                {
+                    "description": str(s.get("description", s["query"])).strip()[:500],
+                    "query": str(s["query"]).strip()[:180],
+                    "seconds": 15,
+                }
+            )
         track = str(data.get("music_track", "")).strip().lower()
         if track not in MUSIC:
             track = random.choice(list(MUSIC))
@@ -133,34 +178,87 @@ Return JSON only, no markdown.
         return fallback_plan()
 
 
-def pexels_video_url(query):
+def pexels_video_url(query, used_ids=None):
+    """Return a downloadable video file URL, preferring portrait / tall footage."""
+    used_ids = used_ids or set()
     response = requests.get(
         PEXELS_URL,
         headers={"Authorization": PEXELS_KEY},
-        params={"query": query, "orientation": "landscape", "size": "large", "per_page": 12},
+        params={
+            "query": query,
+            "orientation": "portrait",
+            "size": "large",
+            "per_page": 15,
+        },
         timeout=45,
     )
     response.raise_for_status()
     videos = response.json().get("videos", [])
+
+    # If portrait search is thin, also try without orientation filter
+    if len(videos) < 3:
+        response2 = requests.get(
+            PEXELS_URL,
+            headers={"Authorization": PEXELS_KEY},
+            params={
+                "query": query,
+                "size": "large",
+                "per_page": 12,
+            },
+            timeout=45,
+        )
+        response2.raise_for_status()
+        extra = response2.json().get("videos", [])
+        seen = {v.get("id") for v in videos}
+        for v in extra:
+            if v.get("id") not in seen:
+                videos.append(v)
+
     options = []
     for video in videos:
+        vid = video.get("id")
+        if vid in used_ids:
+            continue
+        # Prefer files whose height >= width (true portrait) and decent resolution
         for vf in video.get("video_files", []):
             link = vf.get("link")
-            w, h = int(vf.get("width") or 0), int(vf.get("height") or 0)
-            if link:
-                options.append((w * h if w >= 1280 and h >= 720 else 0, link))
+            w = int(vf.get("width") or 0)
+            h = int(vf.get("height") or 0)
+            if not link or w < 480 or h < 640:
+                continue
+            # Score: prefer portrait aspect, then higher resolution
+            is_portrait = 1 if h >= w else 0
+            area = w * h
+            options.append((is_portrait, area, link, vid))
+
     if not options:
-        return None
-    options.sort(key=lambda x: x[0], reverse=True)
-    return random.choice(options[:min(5, len(options))])[1]
+        return None, None
+    # Sort: portrait first, then larger area
+    options.sort(key=lambda x: (x[0], x[1]), reverse=True)
+    # Pick randomly among the top few good candidates
+    top = options[: min(6, len(options))]
+    choice = random.choice(top)
+    return choice[2], choice[3]
 
 
-def download_clip(query, destination):
-    for term in dict.fromkeys([query, f"{query} landscape nature", "beautiful nature landscape cinematic"]):
+def download_clip(query, destination, used_ids=None):
+    """Download a real Pexels video clip. Never uses still images."""
+    used_ids = used_ids if used_ids is not None else set()
+    terms = list(
+        dict.fromkeys(
+            [
+                query,
+                f"{query} landscape nature",
+                f"{query} nature vertical",
+                "beautiful nature landscape cinematic",
+            ]
+        )
+    )
+    for term in terms:
         try:
-            url = pexels_video_url(term)
+            url, vid_id = pexels_video_url(term, used_ids=used_ids)
             if not url:
-                print("No Pexels results for:", term)
+                print("No usable Pexels video results for:", term)
                 continue
             with requests.get(url, stream=True, timeout=(20, 120)) as response:
                 response.raise_for_status()
@@ -169,6 +267,8 @@ def download_clip(query, destination):
                         if chunk:
                             f.write(chunk)
             if destination.stat().st_size > 100_000:
+                if vid_id is not None:
+                    used_ids.add(vid_id)
                 return destination
             destination.unlink(missing_ok=True)
         except requests.RequestException as exc:
@@ -177,21 +277,46 @@ def download_clip(query, destination):
 
 
 def render_scene(source, destination, seconds=15):
+    """Scale + center-crop to 1080x1920, keep natural motion, no Ken-Burns zoom on stills."""
     frames = int(seconds * FPS)
+    # force_original_aspect_ratio=increase then crop fills the frame without letterboxing
+    # or stretching. We intentionally avoid zoompan so real footage motion is preserved.
     video_filter = (
         f"scale={WIDTH}:{HEIGHT}:force_original_aspect_ratio=increase,"
         f"crop={WIDTH}:{HEIGHT},"
-        f"zoompan=z='min(zoom+0.00035,1.035)':d={frames}:"
-        f"x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s={WIDTH}x{HEIGHT}:fps={FPS},"
-        f"trim=duration={seconds},setpts=PTS-STARTPTS,setsar=1"
+        f"trim=duration={seconds},setpts=PTS-STARTPTS,setsar=1,fps={FPS}"
     )
-    run([
-        "ffmpeg", "-y", "-hide_banner", "-loglevel", "error",
-        "-stream_loop", "-1", "-i", source, "-t", str(seconds),
-        "-vf", video_filter, "-an", "-c:v", "libx264", "-preset", "veryfast",
-        "-crf", "20", "-pix_fmt", "yuv420p", "-r", str(FPS),
-        "-movflags", "+faststart", destination,
-    ])
+    run(
+        [
+            "ffmpeg",
+            "-y",
+            "-hide_banner",
+            "-loglevel",
+            "error",
+            "-stream_loop",
+            "-1",
+            "-i",
+            source,
+            "-t",
+            str(seconds),
+            "-vf",
+            video_filter,
+            "-an",
+            "-c:v",
+            "libx264",
+            "-preset",
+            "veryfast",
+            "-crf",
+            "20",
+            "-pix_fmt",
+            "yuv420p",
+            "-r",
+            str(FPS),
+            "-movflags",
+            "+faststart",
+            destination,
+        ]
+    )
 
 
 def find_music(track):
@@ -200,7 +325,11 @@ def find_music(track):
         return expected
     wanted = re.sub(r"[^a-z0-9]", "", track.lower())
     if ASSETS.is_dir():
-        audio = [p for p in ASSETS.iterdir() if p.is_file() and p.suffix.lower() in {".mp3", ".wav", ".m4a", ".aac"}]
+        audio = [
+            p
+            for p in ASSETS.iterdir()
+            if p.is_file() and p.suffix.lower() in {".mp3", ".wav", ".m4a", ".aac"}
+        ]
         for p in audio:
             stem = re.sub(r"[^a-z0-9]", "", p.stem.lower())
             if wanted and (wanted in stem or stem in wanted):
@@ -214,71 +343,197 @@ def make_final_video(clips, music, output):
     concat = WORK / "concat.txt"
     with concat.open("w", encoding="utf-8") as f:
         for clip in clips:
+            # Absolute path, properly escaped for ffmpeg concat demuxer
             f.write("file '" + str(clip.resolve()).replace("'", "'\\''") + "'\n")
     joined = WORK / "joined.mp4"
-    run(["ffmpeg", "-y", "-hide_banner", "-loglevel", "error", "-f", "concat", "-safe", "0", "-i", concat, "-c", "copy", joined])
+    run(
+        [
+            "ffmpeg",
+            "-y",
+            "-hide_banner",
+            "-loglevel",
+            "error",
+            "-f",
+            "concat",
+            "-safe",
+            "0",
+            "-i",
+            concat,
+            "-c",
+            "copy",
+            joined,
+        ]
+    )
 
-    font = next((p for p in [
-        "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
-        "/usr/share/fonts/truetype/liberation2/LiberationSans-Regular.ttf",
-        "/usr/share/fonts/truetype/freefont/FreeSans.ttf",
-    ] if Path(p).is_file()), None)
+    # Subtle watermark in lower-right safe zone (away from Reels UI chrome)
+    font = next(
+        (
+            p
+            for p in [
+                "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
+                "/usr/share/fonts/truetype/liberation2/LiberationSans-Regular.ttf",
+                "/usr/share/fonts/truetype/freefont/FreeSans.ttf",
+                "/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf",
+            ]
+            if Path(p).is_file()
+        ),
+        None,
+    )
     if font:
-        vf = f"drawtext=fontfile='{font}':text='ObetyPl':fontcolor=white@0.62:fontsize=30:shadowcolor=black@0.45:shadowx=2:shadowy=2:x=w-tw-48:y=h-th-38"
+        # Slightly smaller and inset for vertical Reels safe area
+        vf = (
+            f"drawtext=fontfile='{font}':text='ObetyPl':"
+            f"fontcolor=white@0.55:fontsize=28:"
+            f"shadowcolor=black@0.40:shadowx=2:shadowy=2:"
+            f"x=w-tw-40:y=h-th-56"
+        )
     else:
-        vf = "drawbox=x=w-205:y=h-75:w=170:h=42:color=black@0.20:t=fill"
+        # Fallback: semi-transparent box if no font is available
+        vf = "drawbox=x=w-180:y=h-90:w=150:h=40:color=black@0.25:t=fill"
 
     cmd = ["ffmpeg", "-y", "-hide_banner", "-loglevel", "error", "-i", joined]
     if music:
-        cmd += ["-stream_loop", "-1", "-i", music,
-                "-filter_complex",
-                f"[0:v]{vf}[v];[1:a]atrim=duration={DURATION},asetpts=PTS-STARTPTS,volume=0.24,afade=t=in:st=0:d=2,afade=t=out:st={DURATION-4}:d=4[a]",
-                "-map", "[v]", "-map", "[a]"]
+        cmd += [
+            "-stream_loop",
+            "-1",
+            "-i",
+            music,
+            "-filter_complex",
+            (
+                f"[0:v]{vf}[v];"
+                f"[1:a]atrim=duration={DURATION},asetpts=PTS-STARTPTS,"
+                f"volume=0.24,afade=t=in:st=0:d=2,afade=t=out:st={DURATION - 4}:d=4[a]"
+            ),
+            "-map",
+            "[v]",
+            "-map",
+            "[a]",
+        ]
     else:
         print("WARNING: No music found in Assets/; exporting without audio.")
         cmd += ["-vf", vf, "-map", "0:v:0", "-an"]
-    cmd += ["-t", str(DURATION), "-c:v", "libx264", "-preset", "veryfast", "-crf", "20",
-            "-pix_fmt", "yuv420p", "-r", str(FPS)]
+
+    cmd += [
+        "-t",
+        str(DURATION),
+        "-c:v",
+        "libx264",
+        "-preset",
+        "veryfast",
+        "-crf",
+        "20",
+        "-pix_fmt",
+        "yuv420p",
+        "-r",
+        str(FPS),
+    ]
     if music:
         cmd += ["-c:a", "aac", "-b:a", "192k", "-shortest"]
     cmd += ["-movflags", "+faststart", output]
     run(cmd)
 
 
+def validate_output(path):
+    """Basic sanity check that the final file exists and has a reasonable size."""
+    if not path.is_file():
+        fail(f"Final video was not created: {path}")
+    size = path.stat().st_size
+    if size < 200_000:
+        fail(f"Final video is suspiciously small ({size} bytes): {path}")
+    # Optional: probe dimensions if ffprobe is available
+    if shutil.which("ffprobe"):
+        try:
+            result = subprocess.run(
+                [
+                    "ffprobe",
+                    "-v",
+                    "error",
+                    "-select_streams",
+                    "v:0",
+                    "-show_entries",
+                    "stream=width,height,duration",
+                    "-of",
+                    "csv=p=0",
+                    str(path),
+                ],
+                capture_output=True,
+                text=True,
+                check=True,
+                timeout=30,
+            )
+            parts = result.stdout.strip().split(",")
+            if len(parts) >= 2:
+                w, h = int(parts[0]), int(parts[1])
+                if w != WIDTH or h != HEIGHT:
+                    fail(
+                        f"Output dimensions are {w}x{h}, expected {WIDTH}x{HEIGHT}"
+                    )
+                print(f"Validated: {w}x{h}, duration≈{parts[2] if len(parts) > 2 else '?'}s")
+        except (subprocess.SubprocessError, ValueError) as exc:
+            print(f"ffprobe check skipped/warning: {exc}")
+
+
 def main():
     if not GROQ_KEY:
-        fail("GROQ_API_KEY is missing. Add it in GitHub repository Settings > Secrets and variables > Actions.")
+        fail(
+            "GROQ_API_KEY is missing. Add it in GitHub repository "
+            "Settings > Secrets and variables > Actions."
+        )
     if not PEXELS_KEY:
-        fail("PEXELS_API_KEY is missing. Add it in GitHub repository Settings > Secrets and variables > Actions.")
+        fail(
+            "PEXELS_API_KEY is missing. Add it in GitHub repository "
+            "Settings > Secrets and variables > Actions."
+        )
     if not shutil.which("ffmpeg"):
         fail("FFmpeg is not installed or is not in PATH.")
 
     WORK.mkdir(parents=True, exist_ok=True)
     OUTPUT.mkdir(parents=True, exist_ok=True)
-    print("Asking Groq to plan the video...")
+
+    # Clean previous intermediate files for a fresh run
+    for old in WORK.glob("*"):
+        if old.is_file():
+            old.unlink(missing_ok=True)
+
+    print("Asking Groq to plan the vertical Reels video...")
     plan = plan_scenes()
     plan["generated_at_utc"] = datetime.now(timezone.utc).isoformat()
     plan["model"] = GROQ_MODEL
+    plan["resolution"] = f"{WIDTH}x{HEIGHT}"
+    plan["aspect_ratio"] = "9:16"
+    plan["duration_seconds"] = DURATION
+
     safe_title = re.sub(r"[^A-Za-z0-9_-]+", "_", plan["title"]).strip("_") or "Scenic_Moments"
     timestamp = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
     output = OUTPUT / f"ObetyPl_{timestamp}_{safe_title[:45]}.mp4"
-    (OUTPUT / "plan.json").write_text(json.dumps(plan, ensure_ascii=False, indent=2), encoding="utf-8")
+    (OUTPUT / "plan.json").write_text(
+        json.dumps(plan, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
 
+    used_ids = set()
     clips = []
     for i, scene in enumerate(plan["scenes"], 1):
-        source, rendered = WORK / f"source_{i}.mp4", WORK / f"scene_{i}.mp4"
+        source = WORK / f"source_{i}.mp4"
+        rendered = WORK / f"scene_{i}.mp4"
         print(f"\nScene {i}/4: {scene['description']}")
-        if not download_clip(scene["query"], source):
-            fail(f"Could not download Pexels footage for scene {i}. Check PEXELS_API_KEY and rerun.")
+        print(f"  Search query: {scene['query']}")
+        if not download_clip(scene["query"], source, used_ids=used_ids):
+            fail(
+                f"Could not download Pexels footage for scene {i}. "
+                "Check PEXELS_API_KEY and rerun."
+            )
         render_scene(source, rendered, 15)
         clips.append(rendered)
 
     music = find_music(plan["music_track"])
     print("Music:", music.name if music else "none")
     make_final_video(clips, music, output)
+    validate_output(output)
+
     print("\nSUCCESS:", output)
     print(f"Size: {output.stat().st_size / (1024 * 1024):.1f} MB")
     print("Plan:", OUTPUT / "plan.json")
+    print(f"Resolution: {WIDTH}x{HEIGHT} (9:16 vertical for Facebook Reels)")
 
 
 if __name__ == "__main__":
