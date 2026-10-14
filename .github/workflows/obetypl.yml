@@ -47,10 +47,8 @@ jobs:
       - name: Generate 60-second ObetyPl video
         env:
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
           GROQ_MODEL: openai/gpt-oss-20b
-          GEMINI_MODEL: gemini-2.5-flash
           INPUT_SCENERY: ${{ inputs.scenery }}
         run: python make_video.py
 
