@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "description": "Local music fallback files. Licenses are NOT assumed commercial-safe.",
+  "files": [
+    {
+      "key": "silent descent",
+      "filename": "01 — Silent Descent.mp3",
+      "path": "/home/workdir/artifacts/Fautob-main/Assets/01 — Silent Descent.mp3",
+      "exists": true,
+      "license": "unknown — verify before commercial use",
+      "attribution": "unknown",
+      "source": "local Assets/",
+      "notes": "Original repository asset; license not verified by automated system"
+    },
+    {
+      "key": "beautiful dream",
+      "filename": "02 — Beautiful Dream.mp3",
+      "path": "/home/workdir/artifacts/Fautob-main/Assets/02 — Beautiful Dream.mp3",
+      "exists": true,
+      "license": "unknown — verify before commercial use",
+      "attribution": "unknown",
+      "source": "local Assets/",
+      "notes": "Original repository asset; license not verified by automated system"
+    },
+    {
+      "key": "classical vibes 2",
+      "filename": "03 — Classical vibes 2.mp3",
+      "path": "/home/workdir/artifacts/Fautob-main/Assets/03 — Classical vibes 2.mp3",
+      "exists": true,
+      "license": "unknown — verify before commercial use",
+      "attribution": "unknown",
+      "source": "local Assets/",
+      "notes": "Original repository asset; license not verified by automated system"
+    },
+    {
+      "key": "emotional",
+      "filename": "04 — Emotional.mp3",
+      "path": "/home/workdir/artifacts/Fautob-main/Assets/04 — Emotional.mp3",
+      "exists": true,
+      "license": "unknown — verify before commercial use",
+      "attribution": "unknown",
+      "source": "local Assets/",
+      "notes": "Original repository asset; license not verified by automated system"
+    },
+    {
+      "key": "dramatic piano background",
+      "filename": "05 — Dramatic Piano Background.mp3",
+      "path": "/home/workdir/artifacts/Fautob-main/Assets/05 — Dramatic Piano Background.mp3",
+      "exists": true,
+      "license": "unknown — verify before commercial use",
+      "attribution": "unknown",
+      "source": "local Assets/",
+      "notes": "Original repository asset; license not verified by automated system"
+    }
+  ]
+}
