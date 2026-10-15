@@ -1,479 +1,60 @@
 #!/usr/bin/env python3
-"""ObetyPl 60-second vertical scenic video generator for Facebook Reels.
+"""ObetyPl intelligent daily video pipeline for Facebook Reels.
 
-Groq plans scenes; Pexels supplies real video footage only (never photos).
-Output: 1080x1920 (9:16), 30 fps, \~60 s, H.264 + AAC.
+Creative Director (Groq) → Pexels footage → FreeSound / local music → FFmpeg render → QA reports.
+Does NOT publish to Facebook.
 """
+from __future__ import annotations
+
 import json
-import os
-import random
+import logging
 import re
 import shutil
-import subprocess
 import sys
-import time
 from datetime import datetime, timezone
 from pathlib import Path
 
-import requests
+from src.config import (
+    ASSETS,
+    DURATION,
+    GROQ_KEY,
+    HEIGHT,
+    OUTPUT,
+    PEXELS_KEY,
+    WIDTH,
+    WORK,
+)
+from src.creative_director import generate_plan
+from src.history import record_entry
+from src.music import ensure_music_manifest, select_music
+from src.pexels import download_clip
+from src.quality import run_quality_checks
+from src.renderer import make_final_video, render_scene
 
-ROOT = Path(__file__).resolve().parent
-ASSETS = ROOT / "Assets"
-WORK = ROOT / "work"
-OUTPUT = ROOT / "output"
-GROQ_KEY = os.getenv("GROQ_API_KEY", "").strip()
-GROQ_MODEL = os.getenv("GROQ_MODEL", "openai/gpt-oss-20b").strip()
-PEXELS_KEY = os.getenv("PEXELS_API_KEY", "").strip()
-INPUT_SCENERY = os.getenv("INPUT_SCENERY", "").strip()
-GROQ_URL = "https://api.groq.com/openai/v1/chat/completions"
-PEXELS_URL = "https://api.pexels.com/videos/search"
-DURATION, WIDTH, HEIGHT, FPS = 60, 1080, 1920, 30  # 9:16 vertical for Reels
-
-MUSIC = {
-    "silent descent": "01 — Silent Descent.mp3",
-    "beautiful dream": "02 — Beautiful Dream.mp3",
-    "classical vibes 2": "03 — Classical vibes 2.mp3",
-    "emotional": "04 — Emotional.mp3",
-    "dramatic piano background": "05 — Dramatic Piano Background.mp3",
-}
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
+    datefmt="%H:%M:%S",
+)
+logger = logging.getLogger("obetypl")
 
 
-def fail(message):
-    print("ERROR:", message, file=sys.stderr)
+def fail(message: str) -> None:
+    logger.error(message)
     raise SystemExit(1)
 
 
-def run(args):
-    print("+", " ".join(map(str, args)))
-    subprocess.run(list(map(str, args)), check=True)
+def write_json(path: Path, data: object) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
-def call_groq(prompt, retries=4):
-    headers = {"Authorization": f"Bearer {GROQ_KEY}", "Content-Type": "application/json"}
-    payload = {
-        "model": GROQ_MODEL,
-        "messages": [
-            {
-                "role": "system",
-                "content": (
-                    "You plan cinematic vertical nature videos for Facebook Reels. "
-                    "Return valid JSON only."
-                ),
-            },
-            {"role": "user", "content": prompt},
-        ],
-        "temperature": 0.8,
-        "response_format": {"type": "json_object"},
-    }
-    last_error = "Unknown error"
-    for attempt in range(1, retries + 1):
-        try:
-            response = requests.post(
-                GROQ_URL, headers=headers, json=payload, timeout=(20, 90)
-            )
-            if response.status_code in (429, 500, 502, 503, 504):
-                last_error = f"Groq HTTP {response.status_code}: {response.text[:300]}"
-                if attempt < retries:
-                    delay = min(attempt * 6, 24)
-                    print(f"Groq temporarily unavailable; retrying in {delay}s...")
-                    time.sleep(delay)
-                    continue
-            response.raise_for_status()
-            content = response.json()["choices"][0]["message"]["content"]
-            result = json.loads(content)
-            if not isinstance(result, dict):
-                raise ValueError("Groq response is not a JSON object")
-            return result
-        except (requests.RequestException, KeyError, IndexError, ValueError) as exc:
-            last_error = str(exc)
-            if attempt < retries:
-                time.sleep(min(attempt * 5, 20))
-    fail(f"Groq scene planning failed after {retries} attempts: {last_error}")
+def write_text(path: Path, text: str) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(text, encoding="utf-8")
 
 
-def fallback_plan():
-    idea = INPUT_SCENERY or random.choice(
-        [
-            "misty green mountains at sunrise",
-            "quiet tropical beach at golden hour",
-            "peaceful forest after rain",
-            "lake reflecting distant mountains",
-            "rolling green hills beneath dramatic clouds",
-            "waterfall in a lush forest",
-        ]
-    )
-    return {
-        "title": idea.title(),
-        "mood": "peaceful, cinematic, reflective",
-        "music_track": random.choice(list(MUSIC)),
-        "scenes": [
-            {
-                "description": f"Vertical establishing view of {idea}, soft natural light",
-                "query": idea,
-                "seconds": 15,
-            },
-            {
-                "description": f"Atmospheric vertical nature view of {idea}, gentle movement",
-                "query": f"{idea} cinematic nature",
-                "seconds": 15,
-            },
-            {
-                "description": f"Detailed scenic landscape related to {idea}",
-                "query": f"{idea} scenic landscape",
-                "seconds": 15,
-            },
-            {
-                "description": f"Vertical closing landscape of {idea}, warm soft light",
-                "query": f"{idea} sunset nature",
-                "seconds": 15,
-            },
-        ],
-    }
-
-
-def plan_scenes():
-    scenery = INPUT_SCENERY or "Choose a beautiful natural landscape."
-    prompt = f"""
-Plan a 60-second vertical 9:16 cinematic scenic nature video for Facebook Reels
-for a page named ObetyPl.
-Scenery request: {scenery}
-Return JSON with:
-"title": short title (max 7 words),
-"mood": short mood description,
-"music_track": exactly one of {list(MUSIC.keys())},
-"scenes": exactly 4 objects, each containing "description", "query" (short Pexels video search query), "seconds": 15.
-Use realistic natural landscapes, no people, no text or logos in footage, coherent peaceful cinematic mood.
-Prefer scenes that work well in portrait/vertical framing.
-Return JSON only, no markdown.
-"""
-    try:
-        data = call_groq(prompt)
-        scenes = data.get("scenes")
-        if not isinstance(scenes, list) or len(scenes) != 4:
-            raise ValueError("Expected four scenes")
-        clean = []
-        for s in scenes:
-            if not isinstance(s, dict) or not str(s.get("query", "")).strip():
-                raise ValueError("A scene has no search query")
-            clean.append(
-                {
-                    "description": str(s.get("description", s["query"])).strip()[:500],
-                    "query": str(s["query"]).strip()[:180],
-                    "seconds": 15,
-                }
-            )
-        track = str(data.get("music_track", "")).strip().lower()
-        if track not in MUSIC:
-            track = random.choice(list(MUSIC))
-        return {
-            "title": str(data.get("title", "ObetyPl Scenic Moments")).strip()[:100],
-            "mood": str(data.get("mood", "peaceful cinematic")).strip()[:200],
-            "music_track": track,
-            "scenes": clean,
-        }
-    except SystemExit:
-        raise
-    except Exception as exc:
-        print(f"Invalid AI plan ({exc}); using a basic fallback plan.")
-        return fallback_plan()
-
-
-def pexels_video_url(query, used_ids=None):
-    """Return a downloadable video file URL, preferring portrait / tall footage."""
-    used_ids = used_ids or set()
-    response = requests.get(
-        PEXELS_URL,
-        headers={"Authorization": PEXELS_KEY},
-        params={
-            "query": query,
-            "orientation": "portrait",
-            "size": "large",
-            "per_page": 15,
-        },
-        timeout=45,
-    )
-    response.raise_for_status()
-    videos = response.json().get("videos", [])
-
-    # If portrait search is thin, also try without orientation filter
-    if len(videos) < 3:
-        response2 = requests.get(
-            PEXELS_URL,
-            headers={"Authorization": PEXELS_KEY},
-            params={
-                "query": query,
-                "size": "large",
-                "per_page": 12,
-            },
-            timeout=45,
-        )
-        response2.raise_for_status()
-        extra = response2.json().get("videos", [])
-        seen = {v.get("id") for v in videos}
-        for v in extra:
-            if v.get("id") not in seen:
-                videos.append(v)
-
-    options = []
-    for video in videos:
-        vid = video.get("id")
-        if vid in used_ids:
-            continue
-        # Prefer files whose height >= width (true portrait) and decent resolution
-        for vf in video.get("video_files", []):
-            link = vf.get("link")
-            w = int(vf.get("width") or 0)
-            h = int(vf.get("height") or 0)
-            if not link or w < 480 or h < 640:
-                continue
-            # Score: prefer portrait aspect, then higher resolution
-            is_portrait = 1 if h >= w else 0
-            area = w * h
-            options.append((is_portrait, area, link, vid))
-
-    if not options:
-        return None, None
-    # Sort: portrait first, then larger area
-    options.sort(key=lambda x: (x[0], x[1]), reverse=True)
-    # Pick randomly among the top few good candidates
-    top = options[: min(6, len(options))]
-    choice = random.choice(top)
-    return choice[2], choice[3]
-
-
-def download_clip(query, destination, used_ids=None):
-    """Download a real Pexels video clip. Never uses still images."""
-    used_ids = used_ids if used_ids is not None else set()
-    terms = list(
-        dict.fromkeys(
-            [
-                query,
-                f"{query} landscape nature",
-                f"{query} nature vertical",
-                "beautiful nature landscape cinematic",
-            ]
-        )
-    )
-    for term in terms:
-        try:
-            url, vid_id = pexels_video_url(term, used_ids=used_ids)
-            if not url:
-                print("No usable Pexels video results for:", term)
-                continue
-            with requests.get(url, stream=True, timeout=(20, 120)) as response:
-                response.raise_for_status()
-                with open(destination, "wb") as f:
-                    for chunk in response.iter_content(1024 * 1024):
-                        if chunk:
-                            f.write(chunk)
-            if destination.stat().st_size > 100_000:
-                if vid_id is not None:
-                    used_ids.add(vid_id)
-                return destination
-            destination.unlink(missing_ok=True)
-        except requests.RequestException as exc:
-            print(f"Pexels error for {term!r}: {exc}")
-    return None
-
-
-def render_scene(source, destination, seconds=15):
-    """Scale + center-crop to 1080x1920, keep natural motion, no Ken-Burns zoom on stills."""
-    frames = int(seconds * FPS)
-    # force_original_aspect_ratio=increase then crop fills the frame without letterboxing
-    # or stretching. We intentionally avoid zoompan so real footage motion is preserved.
-    video_filter = (
-        f"scale={WIDTH}:{HEIGHT}:force_original_aspect_ratio=increase,"
-        f"crop={WIDTH}:{HEIGHT},"
-        f"trim=duration={seconds},setpts=PTS-STARTPTS,setsar=1,fps={FPS}"
-    )
-    run(
-        [
-            "ffmpeg",
-            "-y",
-            "-hide_banner",
-            "-loglevel",
-            "error",
-            "-stream_loop",
-            "-1",
-            "-i",
-            source,
-            "-t",
-            str(seconds),
-            "-vf",
-            video_filter,
-            "-an",
-            "-c:v",
-            "libx264",
-            "-preset",
-            "veryfast",
-            "-crf",
-            "20",
-            "-pix_fmt",
-            "yuv420p",
-            "-r",
-            str(FPS),
-            "-movflags",
-            "+faststart",
-            destination,
-        ]
-    )
-
-
-def find_music(track):
-    expected = ASSETS / MUSIC.get(track, "")
-    if expected.is_file():
-        return expected
-    wanted = re.sub(r"[^a-z0-9]", "", track.lower())
-    if ASSETS.is_dir():
-        audio = [
-            p
-            for p in ASSETS.iterdir()
-            if p.is_file() and p.suffix.lower() in {".mp3", ".wav", ".m4a", ".aac"}
-        ]
-        for p in audio:
-            stem = re.sub(r"[^a-z0-9]", "", p.stem.lower())
-            if wanted and (wanted in stem or stem in wanted):
-                return p
-        if audio:
-            return random.choice(audio)
-    return None
-
-
-def make_final_video(clips, music, output):
-    concat = WORK / "concat.txt"
-    with concat.open("w", encoding="utf-8") as f:
-        for clip in clips:
-            # Absolute path, properly escaped for ffmpeg concat demuxer
-            f.write("file '" + str(clip.resolve()).replace("'", "'\\''") + "'\n")
-    joined = WORK / "joined.mp4"
-    run(
-        [
-            "ffmpeg",
-            "-y",
-            "-hide_banner",
-            "-loglevel",
-            "error",
-            "-f",
-            "concat",
-            "-safe",
-            "0",
-            "-i",
-            concat,
-            "-c",
-            "copy",
-            joined,
-        ]
-    )
-
-    # Subtle watermark in lower-right safe zone (away from Reels UI chrome)
-    font = next(
-        (
-            p
-            for p in [
-                "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
-                "/usr/share/fonts/truetype/liberation2/LiberationSans-Regular.ttf",
-                "/usr/share/fonts/truetype/freefont/FreeSans.ttf",
-                "/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf",
-            ]
-            if Path(p).is_file()
-        ),
-        None,
-    )
-    if font:
-        # Slightly smaller and inset for vertical Reels safe area
-        vf = (
-            f"drawtext=fontfile='{font}':text='ObetyPl':"
-            f"fontcolor=white@0.55:fontsize=28:"
-            f"shadowcolor=black@0.40:shadowx=2:shadowy=2:"
-            f"x=w-tw-40:y=h-th-56"
-        )
-    else:
-        # Fallback: semi-transparent box if no font is available
-        vf = "drawbox=x=w-180:y=h-90:w=150:h=40:color=black@0.25:t=fill"
-
-    cmd = ["ffmpeg", "-y", "-hide_banner", "-loglevel", "error", "-i", joined]
-    if music:
-        cmd += [
-            "-stream_loop",
-            "-1",
-            "-i",
-            music,
-            "-filter_complex",
-            (
-                f"[0:v]{vf}[v];"
-                f"[1:a]atrim=duration={DURATION},asetpts=PTS-STARTPTS,"
-                f"volume=0.24,afade=t=in:st=0:d=2,afade=t=out:st={DURATION - 4}:d=4[a]"
-            ),
-            "-map",
-            "[v]",
-            "-map",
-            "[a]",
-        ]
-    else:
-        print("WARNING: No music found in Assets/; exporting without audio.")
-        cmd += ["-vf", vf, "-map", "0:v:0", "-an"]
-
-    cmd += [
-        "-t",
-        str(DURATION),
-        "-c:v",
-        "libx264",
-        "-preset",
-        "veryfast",
-        "-crf",
-        "20",
-        "-pix_fmt",
-        "yuv420p",
-        "-r",
-        str(FPS),
-    ]
-    if music:
-        cmd += ["-c:a", "aac", "-b:a", "192k", "-shortest"]
-    cmd += ["-movflags", "+faststart", output]
-    run(cmd)
-
-
-def validate_output(path):
-    """Basic sanity check that the final file exists and has a reasonable size."""
-    if not path.is_file():
-        fail(f"Final video was not created: {path}")
-    size = path.stat().st_size
-    if size < 200_000:
-        fail(f"Final video is suspiciously small ({size} bytes): {path}")
-    # Optional: probe dimensions if ffprobe is available
-    if shutil.which("ffprobe"):
-        try:
-            result = subprocess.run(
-                [
-                    "ffprobe",
-                    "-v",
-                    "error",
-                    "-select_streams",
-                    "v:0",
-                    "-show_entries",
-                    "stream=width,height,duration",
-                    "-of",
-                    "csv=p=0",
-                    str(path),
-                ],
-                capture_output=True,
-                text=True,
-                check=True,
-                timeout=30,
-            )
-            parts = result.stdout.strip().split(",")
-            if len(parts) >= 2:
-                w, h = int(parts[0]), int(parts[1])
-                if w != WIDTH or h != HEIGHT:
-                    fail(
-                        f"Output dimensions are {w}x{h}, expected {WIDTH}x{HEIGHT}"
-                    )
-                print(f"Validated: {w}x{h}, duration≈{parts[2] if len(parts) > 2 else '?'}s")
-        except (subprocess.SubprocessError, ValueError) as exc:
-            print(f"ffprobe check skipped/warning: {exc}")
-
-
-def main():
+def main() -> None:
     if not GROQ_KEY:
         fail(
             "GROQ_API_KEY is missing. Add it in GitHub repository "
@@ -489,51 +70,137 @@ def main():
 
     WORK.mkdir(parents=True, exist_ok=True)
     OUTPUT.mkdir(parents=True, exist_ok=True)
+    ensure_music_manifest()
 
-    # Clean previous intermediate files for a fresh run
+    # Clean previous intermediate files
     for old in WORK.glob("*"):
         if old.is_file():
             old.unlink(missing_ok=True)
 
-    print("Asking Groq to plan the vertical Reels video...")
-    plan = plan_scenes()
-    plan["generated_at_utc"] = datetime.now(timezone.utc).isoformat()
-    plan["model"] = GROQ_MODEL
+    logger.info("Creative Director planning video...")
+    plan = generate_plan(num_candidates=3)
     plan["resolution"] = f"{WIDTH}x{HEIGHT}"
     plan["aspect_ratio"] = "9:16"
     plan["duration_seconds"] = DURATION
 
+    content_id = plan["content_id"]
     safe_title = re.sub(r"[^A-Za-z0-9_-]+", "_", plan["title"]).strip("_") or "Scenic_Moments"
     timestamp = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
     output = OUTPUT / f"ObetyPl_{timestamp}_{safe_title[:45]}.mp4"
-    (OUTPUT / "plan.json").write_text(
-        json.dumps(plan, ensure_ascii=False, indent=2), encoding="utf-8"
-    )
 
-    used_ids = set()
-    clips = []
+    write_json(OUTPUT / "plan.json", plan)
+
+    # Footage
+    used_ids: set[int] = set()
+    clips: list[Path] = []
+    clip_metas: list[dict] = []
     for i, scene in enumerate(plan["scenes"], 1):
         source = WORK / f"source_{i}.mp4"
         rendered = WORK / f"scene_{i}.mp4"
-        print(f"\nScene {i}/4: {scene['description']}")
-        print(f"  Search query: {scene['query']}")
-        if not download_clip(scene["query"], source, used_ids=used_ids):
+        logger.info("Scene %d/%d: %s", i, len(plan["scenes"]), scene["description"])
+        logger.info("  Search: %s", scene["query"])
+        meta = download_clip(scene["query"], source, used_ids=used_ids)
+        if not meta:
             fail(
                 f"Could not download Pexels footage for scene {i}. "
-                "Check PEXELS_API_KEY and rerun."
+                "Check PEXELS_API_KEY and query."
             )
-        render_scene(source, rendered, 15)
+        render_scene(source, rendered, float(scene.get("seconds") or 15))
         clips.append(rendered)
+        clip_metas.append(meta)
 
-    music = find_music(plan["music_track"])
-    print("Music:", music.name if music else "none")
-    make_final_video(clips, music, output)
-    validate_output(output)
+    # Music
+    logger.info("Selecting music (FreeSound → local fallback)...")
+    music_report = select_music(
+        plan.get("music_mood") or "calm ambient",
+        WORK,
+        track_hint=plan.get("music_track_hint") or "",
+    )
+    write_json(OUTPUT / "music_report.json", music_report)
 
-    print("\nSUCCESS:", output)
-    print(f"Size: {output.stat().st_size / (1024 * 1024):.1f} MB")
-    print("Plan:", OUTPUT / "plan.json")
-    print(f"Resolution: {WIDTH}x{HEIGHT} (9:16 vertical for Facebook Reels)")
+    music_path = Path(music_report["local_path"]) if music_report.get("local_path") else None
+    logger.info("Music source: %s (%s)", music_report.get("source"), music_path)
+
+    # Render
+    make_final_video(clips, music_path, output)
+
+    # Quality
+    qa = run_quality_checks(plan, output, music_report, clip_metas)
+    write_json(OUTPUT / "quality_report.json", qa)
+
+    # Caption
+    caption_body = plan.get("caption") or ""
+    hashtags = " ".join(plan.get("hashtags") or [])
+    full_caption = f"{caption_body}\n\n{hashtags}".strip()
+    write_text(OUTPUT / "caption.txt", full_caption)
+
+    # Attribution
+    attr_lines = [
+        "ObetyPl video attribution",
+        f"Content ID: {content_id}",
+        f"Title: {plan.get('title')}",
+        "",
+        "Video footage: Pexels (see plan.json for search terms and clip metadata)",
+    ]
+    for m in clip_metas:
+        attr_lines.append(
+            f"  - Pexels id={m.get('id')} user={m.get('user')} url={m.get('url')}"
+        )
+    attr_lines.append("")
+    attr_lines.append("Audio:")
+    if music_report.get("source") == "freesound":
+        attr_lines.append(
+            f"  FreeSound id={music_report.get('sound_id')} "
+            f"title={music_report.get('title')} by {music_report.get('creator')}"
+        )
+        attr_lines.append(f"  License: {music_report.get('license')}")
+        attr_lines.append(f"  URL: {music_report.get('source_url')}")
+        if music_report.get("attribution_required"):
+            attr_lines.append("  Attribution required under the license.")
+    elif music_report.get("source") == "local_assets":
+        attr_lines.append(f"  Local file: {music_report.get('title')}")
+        attr_lines.append(f"  License: {music_report.get('license')}")
+        attr_lines.append("  WARNING: Local asset license not auto-verified.")
+    else:
+        attr_lines.append("  No audio selected.")
+    write_text(OUTPUT / "attribution.txt", "\n".join(attr_lines))
+
+    # History (only record success if ready)
+    history_entry = {
+        "content_id": content_id,
+        "created_at_utc": plan.get("generated_at_utc"),
+        "date": plan.get("creation_date"),
+        "concept": plan.get("concept"),
+        "title": plan.get("title"),
+        "main_theme": plan.get("emotional_tone"),
+        "scene_descriptions": [s.get("description") for s in plan.get("scenes", [])],
+        "search_terms": [s.get("query") for s in plan.get("scenes", [])],
+        "music_source": music_report.get("source"),
+        "music_title": music_report.get("title"),
+        "music_license": music_report.get("license"),
+        "caption": plan.get("caption"),
+        "hashtags": plan.get("hashtags"),
+        "status": "ready" if qa.get("ready") else "failed_qa",
+        "quality_overall": qa.get("overall"),
+        "output_file": output.name,
+        "selection_reason": plan.get("selection_reason"),
+    }
+    if not qa.get("ready"):
+        history_entry["fail_reason"] = "Quality checks failed"
+    try:
+        record_entry(history_entry)
+    except Exception as exc:
+        logger.warning("History update failed (non-fatal): %s", exc)
+
+    if not qa.get("ready"):
+        fail(f"Quality checks failed (overall={qa.get('overall')}). See output/quality_report.json")
+
+    logger.info("SUCCESS: %s", output)
+    logger.info("Size: %.1f MB", output.stat().st_size / (1024 * 1024))
+    logger.info("Plan: %s", OUTPUT / "plan.json")
+    logger.info("Caption: %s", OUTPUT / "caption.txt")
+    logger.info("Music report: %s", OUTPUT / "music_report.json")
+    logger.info("Quality: %s", OUTPUT / "quality_report.json")
 
 
 if __name__ == "__main__":
