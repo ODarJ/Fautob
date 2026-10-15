@@ -1,5 +1,42 @@
 {
   "version": 1,
-  "updated_at_utc": "2026-10-15T04:58:20.052801+00:00",
-  "entries": []
+  "updated_at_utc": "2026-10-15T06:23:58.686920+00:00",
+  "entries": [
+    {
+      "content_id": "obetypl-abc039fcbb54",
+      "created_at_utc": "2026-10-15T06:21:38.693629+00:00",
+      "date": "2026-10-15",
+      "concept": "Autumn Forest Cascade",
+      "title": "Autumn Waterfall",
+      "main_theme": "Warm, reflective",
+      "scene_descriptions": [
+        "Autumn path veiled in mist",
+        "Water tumbles over mossy rocks",
+        "Leaves drift through sunlit canopy",
+        "Mist curls over a still pool"
+      ],
+      "search_terms": [
+        "autumn forest path vertical",
+        "forest waterfall vertical",
+        "autumn leaves vertical",
+        "misty pool vertical"
+      ],
+      "music_source": "freesound",
+      "music_title": "arpegiator",
+      "music_license": "http://creativecommons.org/publicdomain/zero/1.0/",
+      "caption": "Walk through a sunlit autumn forest, where a gentle waterfall murmurs beside a misty pool, and leaves drift like soft memories. Feel the season’s calm embrace.",
+      "hashtags": [
+        "#Autumn",
+        "#Waterfall",
+        "#Forest",
+        "#Nature",
+        "#ObetyPl"
+      ],
+      "status": "ready",
+      "quality_overall": "pass",
+      "output_file": "ObetyPl_20261015_062138_Autumn_Waterfall.mp4",
+      "selection_reason": "Highlights autumn’s reflective mood, appealing to viewers seeking serene, seasonal visuals.",
+      "recorded_at_utc": "2026-10-15T06:23:58.686894+00:00"
+    }
+  ]
 }
