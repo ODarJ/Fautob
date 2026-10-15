@@ -14,7 +14,7 @@ on:
     - cron: "0 1 * * *"
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: obetypl-video
@@ -28,6 +28,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          # Fetch full history so we can commit state updates cleanly
+          fetch-depth: 0
 
       - name: Install Python
         uses: actions/setup-python@v5
@@ -44,20 +47,42 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Generate 60-second ObetyPl video
+      - name: Generate ObetyPl video
         env:
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
           PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+          FREESOUND_API_KEY: ${{ secrets.FREESOUND_API_KEY }}
           GROQ_MODEL: openai/gpt-oss-20b
           INPUT_SCENERY: ${{ inputs.scenery }}
         run: python make_video.py
 
-      - name: Upload MP4 and planning report
+      - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: obetypl-video-${{ github.run_number }}
           path: |
             output/ObetyPl_*.mp4
             output/plan.json
+            output/caption.txt
+            output/music_report.json
+            output/attribution.txt
+            output/quality_report.json
+            data/content_history.json
+            data/music_manifest.json
           if-no-files-found: error
           retention-days: 14
+
+      - name: Persist content history
+        if: success()
+        run: |
+          git config user.name "ObetyPl Bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # Only commit the small state files — never MP4s, secrets, or work/
+          git add data/content_history.json data/music_manifest.json || true
+          if git diff --staged --quiet; then
+            echo "No history changes to commit"
+          else
+            git commit -m "chore: update ObetyPl content history [skip ci]"
+            # Push with concurrency safety; ignore non-fast-forward race
+            git push || echo "WARNING: history push failed (possible concurrent run)"
+          fi
