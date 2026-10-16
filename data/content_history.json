@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at_utc": "2026-10-15T06:23:58.686920+00:00",
+  "updated_at_utc": "2026-10-16T05:39:46.306195+00:00",
   "entries": [
     {
       "content_id": "obetypl-abc039fcbb54",
@@ -37,6 +37,41 @@
       "output_file": "ObetyPl_20261015_062138_Autumn_Waterfall.mp4",
       "selection_reason": "Highlights autumn’s reflective mood, appealing to viewers seeking serene, seasonal visuals.",
       "recorded_at_utc": "2026-10-15T06:23:58.686894+00:00"
+    },
+    {
+      "content_id": "obetypl-b9e1f3c775d8",
+      "created_at_utc": "2026-10-16T05:37:05.206723+00:00",
+      "date": "2026-10-16",
+      "concept": "Mountain sunrise over alpine lake",
+      "title": "Alpine Dawn",
+      "main_theme": "Serene",
+      "scene_descriptions": [
+        "Mist rises over calm alpine lake at dawn",
+        "Mountains reflected in still water",
+        "Sun rays breaking through clouds over peaks",
+        "Wide view of valley with sun fully risen"
+      ],
+      "search_terms": [
+        "alpine lake sunrise vertical",
+        "mountain reflection lake vertical",
+        "mountain sunrise rays vertical",
+        "mountain valley sunrise vertical"
+      ],
+      "music_source": "freesound",
+      "music_title": "Curious Ambience.wav",
+      "music_license": "http://creativecommons.org/publicdomain/zero/1.0/",
+      "caption": "Awaken with the gentle light of an alpine dawn. The quiet rise of the sun over crystal waters invites stillness and reflection.",
+      "hashtags": [
+        "#AlpineDawn",
+        "#MountainMorning",
+        "#NatureCalm",
+        "#ObetyPl"
+      ],
+      "status": "ready",
+      "quality_overall": "pass",
+      "output_file": "ObetyPl_20261016_053705_Alpine_Dawn.mp4",
+      "selection_reason": "Captures tranquil mountain scenery, aligning with ObetyPl’s focus on calm and mindfulness.",
+      "recorded_at_utc": "2026-10-16T05:39:46.306170+00:00"
     }
   ]
 }
