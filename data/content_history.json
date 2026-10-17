@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at_utc": "2026-10-17T03:39:37.228817+00:00",
+  "updated_at_utc": "2026-10-17T05:29:22.618136+00:00",
   "entries": [
     {
       "content_id": "obetypl-abc039fcbb54",
@@ -123,6 +123,58 @@
       "output_file": "ObetyPl_20261017_033226_Pine_Mist_Dawn.mp4",
       "selection_reason": "Captures subtle forest serenity, avoiding recent duplicates",
       "recorded_at_utc": "2026-10-17T03:39:37.228785+00:00"
+    },
+    {
+      "content_id": "obetypl-20261017-790cca57",
+      "created_at_utc": "2026-10-17T05:25:03.096326+00:00",
+      "date": "2026-10-17",
+      "concept": "serene desert dunes at dusk",
+      "title": "Serene Desert Dunes At Dusk",
+      "main_theme": "peaceful, cinematic, reflective",
+      "scene_descriptions": [
+        "Immediate visual hook: soft light revealing serene desert dunes at dusk",
+        "Wide establishing view of serene desert dunes at dusk, natural movement",
+        "Closer atmospheric detail within serene desert dunes at dusk",
+        "Gentle natural movement in serene desert dunes at dusk",
+        "Different perspective of serene desert dunes at dusk",
+        "Immersive texture and light of serene desert dunes at dusk",
+        "Rich visual moment in serene desert dunes at dusk",
+        "Central scenic highlight of serene desert dunes at dusk",
+        "Shifted composition of serene desert dunes at dusk",
+        "Calm immersive moment in serene desert dunes at dusk",
+        "Quiet transition toward resolution of serene desert dunes at dusk",
+        "Memorable closing image of serene desert dunes at dusk"
+      ],
+      "search_terms": [
+        "serene desert dunes at dusk",
+        "serene desert dunes at dusk landscape wide",
+        "serene desert dunes at dusk nature detail",
+        "serene desert dunes at dusk cinematic motion",
+        "serene desert dunes at dusk scenic view",
+        "serene desert dunes at dusk soft light nature",
+        "serene desert dunes at dusk beautiful landscape",
+        "serene desert dunes at dusk dramatic nature",
+        "serene desert dunes at dusk vertical nature",
+        "serene desert dunes at dusk peaceful scenery",
+        "serene desert dunes at dusk serene landscape",
+        "serene desert dunes at dusk sunset nature calm"
+      ],
+      "music_source": "freesound",
+      "music_title": "Tranquil Nature Soundscape",
+      "music_license": "https://creativecommons.org/licenses/by/4.0/",
+      "caption": "A quiet journey through nature. Serene Desert Dunes At Dusk. Take three minutes of stillness with ObetyPl.",
+      "hashtags": [
+        "#Nature",
+        "#Scenic",
+        "#Peaceful",
+        "#ObetyPl",
+        "#Mindfulness"
+      ],
+      "status": "ready",
+      "quality_overall": "pass",
+      "output_file": "ObetyPl_20261017_052503_Serene_Desert_Dunes_At_Dusk.mp4",
+      "selection_reason": "Deterministic fallback plan (AI unavailable or invalid response)",
+      "recorded_at_utc": "2026-10-17T05:29:22.618114+00:00"
     }
   ]
 }
