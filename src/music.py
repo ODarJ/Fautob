@@ -1,4 +1,4 @@
-"""Music selection: FreeSound primary, local Assets fallback, Groq-assisted choice."""
+"""Music selection: FreeSound primary, local Assets fallback (no AI calls)."""
 from __future__ import annotations
 
 import json
@@ -55,14 +55,13 @@ def ensure_music_manifest() -> dict[str, Any]:
 
 
 def list_local_tracks() -> list[Path]:
-    """Return actual existing audio files from Assets/, preferring the five known tracks."""
+    """Return actual existing audio files from Assets/."""
     ensure_music_manifest()
     tracks: list[Path] = []
     for filename in LOCAL_MUSIC.values():
         p = ASSETS / filename
         if p.is_file():
             tracks.append(p)
-    # Also discover any other audio (robust against encoding quirks)
     if ASSETS.is_dir():
         for p in sorted(ASSETS.iterdir()):
             if (
@@ -75,40 +74,17 @@ def list_local_tracks() -> list[Path]:
 
 
 def _normalize_key(s: str) -> str:
+    """Normalize for matching despite em-dash / mojibake filename variants."""
+    s = s.replace("\u2014", " ").replace("\u2013", " ")
+    s = s.replace("—", " ").replace("–", " ").replace("-", " ").replace("_", " ")
+    s = s.replace("ΓÇö", " ").replace("â€”", " ").replace("â€“", " ")
     return re.sub(r"[^a-z0-9]", "", s.lower())
 
 
-def _groq_pick_local(mood: str, available_keys: list[str]) -> str | None:
-    """Ask Groq which local track best matches mood; validate against real keys."""
-    if not available_keys:
-        return None
-    try:
-        from src.creative_director import _call_groq
-
-        system = "You select background music. Reply with JSON only."
-        prompt = f"""
-Given these available local music track keys: {available_keys}
-And desired mood: {mood}
-Return JSON: {{"choice": "<exact key from the list>", "reason": "short"}}
-Choose the single best match. If unsure, pick the most neutral/calm option.
-"""
-        data = _call_groq(prompt, system, retries=2, temperature=0.3)
-        choice = str(data.get("choice") or "").strip().lower()
-        if choice in available_keys:
-            return choice
-        # fuzzy match
-        for a in available_keys:
-            if _normalize_key(a) in _normalize_key(choice) or _normalize_key(choice) in _normalize_key(a):
-                return a
-    except Exception as exc:
-        logger.info("Groq local music pick unavailable: %s", exc)
-    return None
-
 
 def _deterministic_pick(mood: str, available_keys: list[str]) -> str:
-    """Documented deterministic selection when Groq is unavailable."""
+    """Documented deterministic selection — no AI."""
     mood_l = mood.lower()
-    # Simple keyword mapping
     rules = [
         (("dramatic", "epic", "intense", "powerful"), "dramatic piano background"),
         (("emotional", "sad", "melancholy", "touching"), "emotional"),
@@ -119,7 +95,6 @@ def _deterministic_pick(mood: str, available_keys: list[str]) -> str:
     for keywords, key in rules:
         if any(k in mood_l for k in keywords) and key in available_keys:
             return key
-    # Hash-based stable fallback
     idx = sum(ord(c) for c in mood_l) % len(available_keys)
     return available_keys[idx]
 
@@ -129,8 +104,8 @@ def select_music(
 ) -> dict[str, Any]:
     """
     Primary: FreeSound (preview + commercial-OK license).
-    Fallback: one of the five local Assets/ tracks.
-    Always returns a report dict.
+    Fallback: one of the five local Assets/ tracks via deterministic rules.
+    Never calls the planning AI.
     """
     report: dict[str, Any] = {
         "source": None,
@@ -151,7 +126,6 @@ def select_music(
 
     dest = work_dir / "selected_music.mp3"
 
-    # A. Try FreeSound
     fs_result = freesound.select_and_download(music_mood, dest)
     if fs_result:
         report.update(fs_result)
@@ -161,7 +135,6 @@ def select_music(
         "FreeSound unavailable, no suitable licensed sound, or download failed"
     )
 
-    # B/C. Local fallback
     local_tracks = list_local_tracks()
     if not local_tracks:
         report["warnings"].append("No local music files found in Assets/")
@@ -171,14 +144,10 @@ def select_music(
     available_keys = list(LOCAL_MUSIC.keys())
     chosen_key = None
 
-    # Prefer explicit hint if valid
     if track_hint and track_hint in LOCAL_MUSIC:
         path = ASSETS / LOCAL_MUSIC[track_hint]
         if path.is_file():
             chosen_key = track_hint
-
-    if not chosen_key:
-        chosen_key = _groq_pick_local(music_mood, available_keys)
 
     if not chosen_key:
         chosen_key = _deterministic_pick(music_mood, available_keys)
@@ -186,7 +155,6 @@ def select_music(
     filename = LOCAL_MUSIC.get(chosen_key, local_tracks[0].name)
     path = ASSETS / filename
     if not path.is_file():
-        # Robust discovery by normalized name
         target_norm = _normalize_key(filename)
         for p in local_tracks:
             if _normalize_key(p.name) == target_norm or target_norm in _normalize_key(p.name):

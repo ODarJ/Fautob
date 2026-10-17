@@ -13,12 +13,12 @@ HISTORY_PATH = DATA / "content_history.json"
 MUSIC_MANIFEST_PATH = DATA / "music_manifest.json"
 
 # Video targets
-DURATION = 60
+DURATION = 180
 WIDTH = 1080
 HEIGHT = 1920
 FPS = 30
 SCENE_SECONDS = 15
-NUM_SCENES = 4
+NUM_SCENES = 12
 
 # API endpoints
 GROQ_URL = "https://api.groq.com/openai/v1/chat/completions"
@@ -65,7 +65,7 @@ NON_COMMERCIAL_MARKERS = ("nc", "noncommercial", "non-commercial", "non commerci
 
 # History limits
 HISTORY_MAX_ENTRIES = 200
-RECENT_CONCEPT_WINDOW = 14  # days to avoid near-duplicates
+RECENT_CONCEPT_WINDOW = 30  # days to avoid near-duplicates
 
 # Scoring weights for candidate concepts
 SCORE_WEIGHTS = {
@@ -78,6 +78,6 @@ SCORE_WEIGHTS = {
 }
 
 # Quality thresholds
-MIN_VIDEO_BYTES = 200_000
+MIN_VIDEO_BYTES = 500_000
 MIN_CLIP_BYTES = 100_000
-MAX_DURATION_SLACK = 3.0  # seconds
+MAX_DURATION_SLACK = 5.0  # seconds

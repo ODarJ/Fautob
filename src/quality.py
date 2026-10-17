@@ -8,7 +8,7 @@ import subprocess
 from pathlib import Path
 from typing import Any
 
-from src.config import DURATION, HEIGHT, MAX_DURATION_SLACK, MIN_VIDEO_BYTES, WIDTH
+from src.config import DURATION, FPS, HEIGHT, MAX_DURATION_SLACK, MIN_VIDEO_BYTES, NUM_SCENES, WIDTH
 
 logger = logging.getLogger(__name__)
 
@@ -57,18 +57,20 @@ def run_quality_checks(
         elif status == "warn" and overall != "fail":
             overall = "warn"
 
-    # 1. Plan validity
+    # 1. Plan validity: scene count is a critical production requirement.
     scenes = plan.get("scenes") or []
-    if len(scenes) >= 3 and plan.get("content_id") and plan.get("caption"):
-        add("content_plan", "pass", "Plan has required fields and scenes")
+    if len(scenes) == NUM_SCENES and plan.get("content_id") and plan.get("caption"):
+        add("content_plan", "pass", f"Plan has exactly {NUM_SCENES} scenes and required fields")
     else:
-        add("content_plan", "fail", "Plan missing critical fields")
+        add("content_plan", "fail", f"Plan has {len(scenes)} scenes; expected exactly {NUM_SCENES}, with content_id and caption")
 
     # 2. Footage obtained
     if len(clip_metas) >= len(scenes):
         add("footage", "pass", f"Obtained {len(clip_metas)} clips")
-    elif len(clip_metas) > 0:
+    elif len(clip_metas) >= max(1, len(scenes) // 2):
         add("footage", "warn", f"Only {len(clip_metas)} clips for {len(scenes)} scenes")
+    elif len(clip_metas) > 0:
+        add("footage", "fail", f"Insufficient footage: {len(clip_metas)}/{len(scenes)} scenes")
     else:
         add("footage", "fail", "No footage obtained")
 
@@ -105,12 +107,32 @@ def run_quality_checks(
             else:
                 add("resolution", "fail", "No video stream")
 
+            # Duration and frame rate are critical: never mark a mismatched render ready.
             fmt = probe.get("format") or {}
-            dur = float(fmt.get("duration") or 0)
-            if abs(dur - DURATION) <= MAX_DURATION_SLACK:
-                add("duration", "pass", f"{dur:.1f}s")
+            try:
+                dur = float(fmt.get("duration") or 0)
+            except (TypeError, ValueError):
+                dur = 0.0
+            if dur > 0 and abs(dur - DURATION) <= MAX_DURATION_SLACK:
+                add("duration", "pass", f"{dur:.2f}s (target {DURATION}s ± {MAX_DURATION_SLACK}s)")
             else:
-                add("duration", "warn", f"Duration {dur:.1f}s (target {DURATION})")
+                add("duration", "fail", f"Duration {dur:.2f}s; expected {DURATION}s ± {MAX_DURATION_SLACK}s")
+
+            if vstreams:
+                stream = vstreams[0]
+                raw_rate = stream.get("avg_frame_rate") or stream.get("r_frame_rate") or "0/1"
+                try:
+                    if isinstance(raw_rate, str) and "/" in raw_rate:
+                        numerator, denominator = raw_rate.split("/", 1)
+                        frame_rate = float(numerator) / float(denominator) if float(denominator) else 0.0
+                    else:
+                        frame_rate = float(raw_rate)
+                except (TypeError, ValueError, ZeroDivisionError):
+                    frame_rate = 0.0
+                if abs(frame_rate - FPS) <= 0.01:
+                    add("frame_rate", "pass", f"{frame_rate:.3f} FPS")
+                else:
+                    add("frame_rate", "fail", f"Got {frame_rate:.3f} FPS; expected {FPS} FPS")
 
             if music_report.get("local_path"):
                 if astreams:
@@ -120,7 +142,7 @@ def run_quality_checks(
             else:
                 add("audio_present", "warn", "No music selected; silent video")
         else:
-            add("ffprobe", "warn", "ffprobe unavailable; skipped stream checks")
+            add("ffprobe", "fail", "Could not validate MP4 streams; ffprobe missing or file is unreadable")
 
     # 8. License status
     lic = music_report.get("license") or "unknown"
@@ -140,9 +162,9 @@ def run_quality_checks(
     # 11. Watermark (assumed by renderer; cannot easily detect without OCR)
     add("watermark", "pass", "Renderer configured to draw ObetyPl watermark")
 
-    # 12. Ready for review
-    ready = overall != "fail"
-    add("ready_for_review", "pass" if ready else "fail", "All critical checks passed" if ready else "Critical failures present")
+    # 12. Ready for review. Determine this only after all critical checks above.
+    ready = not any(check["status"] == "fail" for check in checks)
+    add("ready_for_review", "pass" if ready else "fail", "All critical checks passed" if ready else "One or more critical checks failed")
 
     return {
         "overall": overall,

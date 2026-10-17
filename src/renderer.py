@@ -117,7 +117,7 @@ def make_final_video(clips: list[Path], music_path: Path | None, output: Path) -
             (
                 f"[0:v]{vf}[v];"
                 f"[1:a]atrim=duration={DURATION},asetpts=PTS-STARTPTS,"
-                f"volume=0.24,afade=t=in:st=0:d=2,afade=t=out:st={DURATION - 4}:d=4[a]"
+                f"volume=0.45,afade=t=in:st=0:d=3,afade=t=out:st={DURATION - 6}:d=6[a]"
             ),
             "-map",
             "[v]",
