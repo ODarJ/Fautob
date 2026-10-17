@@ -1,7 +1,7 @@
 # ObetyPl — နေ့စဉ်ရှုခင်းဗီဒီယို (Facebook မတင်သေးပါ)
 
 ## ဒီ code က ဘာလုပ်မလဲ
-- **Groq** AI က 60 စက္ကန့် **vertical (9:16)** nature video အတွက် scene plan နဲ့ caption ရေးတယ်။
+- **Groq** AI က 180 စက္ကန့် **vertical (9:16)** nature video အတွက် scene plan နဲ့ caption ရေးတယ်။
 - **Pexels** က real video footage တွေကို ရှာပြီး download လုပ်တယ် (photo မသုံးဘူး)။
 - **FreeSound** က သင့်တော်တဲ့ background music ကို ရှာတယ် (CC0 / CC-BY license ပဲ လက်ခံ)။
 - FreeSound မရရင် `Assets/` ထဲက သီချင်း ၅ ပုဒ်ထဲက တစ်ပုဒ်ကို fallback အဖြစ် သုံးတယ်။

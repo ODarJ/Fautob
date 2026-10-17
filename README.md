@@ -1,6 +1,6 @@
 # ObetyPl — Intelligent Daily Scenic Video Pipeline
 
-Autonomous AI system that plans, generates, and quality-checks ~60-second vertical (9:16) cinematic nature videos for the ObetyPl Facebook Page.
+Autonomous AI system that plans, generates, and quality-checks ~180-second vertical (9:16) cinematic nature videos for the ObetyPl Facebook Page.
 
 **Does not publish to Facebook.** Output is for manual review and posting.
 
