@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at_utc": "2026-10-17T05:29:22.618136+00:00",
+  "updated_at_utc": "2026-10-18T05:39:11.827489+00:00",
   "entries": [
     {
       "content_id": "obetypl-abc039fcbb54",
@@ -175,6 +175,57 @@
       "output_file": "ObetyPl_20261017_052503_Serene_Desert_Dunes_At_Dusk.mp4",
       "selection_reason": "Deterministic fallback plan (AI unavailable or invalid response)",
       "recorded_at_utc": "2026-10-17T05:29:22.618114+00:00"
+    },
+    {
+      "content_id": "obetypl-a65e75e8d84b",
+      "created_at_utc": "2026-10-18T05:33:45.174784+00:00",
+      "date": "2026-10-18",
+      "concept": "Misty Mountain Valley",
+      "title": "Dawn in Misty Valley",
+      "main_theme": "Tranquil",
+      "scene_descriptions": [
+        "Golden rays break through thick mist",
+        "Wide shot of valley surrounded by peaks",
+        "Close‑up of droplets on pine needles",
+        "Fog drifts across the valley floor",
+        "High‑angle shot over valley and streams",
+        "Gentle river cutting through mist",
+        "Colorful blooms amid the mist",
+        "Clear lake reflecting peaks",
+        "Smooth pan revealing lake edges",
+        "Sunlight dancing on lake surface",
+        "Mountain peak against dawn sky",
+        "Sky transitioning from pink to blue"
+      ],
+      "search_terms": [
+        "misty mountain valley sunrise video",
+        "mountain valley wide shot video",
+        "dewdrop on leaf video",
+        "fog rolling over valley video",
+        "bird eye view valley video",
+        "river flowing through mist video",
+        "wildflowers in valley video",
+        "crystal clear lake valley video",
+        "pan across lake video",
+        "sunlight on lake surface video",
+        "mountain peak silhouette video",
+        "dawn sky over valley video"
+      ],
+      "music_source": "freesound",
+      "music_title": "Ethereal Voices.mp3",
+      "music_license": "http://creativecommons.org/publicdomain/zero/1.0/",
+      "caption": "Experience the gentle hush of a misty mountain valley as dawn unfolds, revealing crystal lakes, wildflowers, and towering peaks—an invitation to breathe, pause, and find stillness.",
+      "hashtags": [
+        "#ObetyPl",
+        "#Nature",
+        "#Cinematic",
+        "#Mindfulness"
+      ],
+      "status": "ready",
+      "quality_overall": "pass",
+      "output_file": "ObetyPl_20261018_053345_Dawn_in_Misty_Valley.mp4",
+      "selection_reason": "Unique misty landscape, layered depth, and tranquil narrative.",
+      "recorded_at_utc": "2026-10-18T05:39:11.827460+00:00"
     }
   ]
 }
