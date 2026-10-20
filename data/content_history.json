@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at_utc": "2026-10-19T06:00:16.436647+00:00",
+  "updated_at_utc": "2026-10-20T05:51:12.780824+00:00",
   "entries": [
     {
       "content_id": "obetypl-abc039fcbb54",
@@ -278,6 +278,58 @@
       "output_file": "ObetyPl_20261019_055324_Waterfall_In_A_Lush_Forest.mp4",
       "selection_reason": "Deterministic fallback plan (AI unavailable or invalid response)",
       "recorded_at_utc": "2026-10-19T06:00:16.436619+00:00"
+    },
+    {
+      "content_id": "obetypl-20261020-01b4b2bb",
+      "created_at_utc": "2026-10-20T05:45:40.876608+00:00",
+      "date": "2026-10-20",
+      "concept": "misty green mountains at sunrise",
+      "title": "Misty Green Mountains At Sunrise",
+      "main_theme": "peaceful, cinematic, reflective",
+      "scene_descriptions": [
+        "Immediate visual hook: soft light revealing misty green mountains at sunrise",
+        "Wide establishing view of misty green mountains at sunrise, natural movement",
+        "Closer atmospheric detail within misty green mountains at sunrise",
+        "Gentle natural movement in misty green mountains at sunrise",
+        "Different perspective of misty green mountains at sunrise",
+        "Immersive texture and light of misty green mountains at sunrise",
+        "Rich visual moment in misty green mountains at sunrise",
+        "Central scenic highlight of misty green mountains at sunrise",
+        "Shifted composition of misty green mountains at sunrise",
+        "Calm immersive moment in misty green mountains at sunrise",
+        "Quiet transition toward resolution of misty green mountains at sunrise",
+        "Memorable closing image of misty green mountains at sunrise"
+      ],
+      "search_terms": [
+        "misty green mountains at sunrise",
+        "misty green mountains at sunrise landscape wide",
+        "misty green mountains at sunrise nature detail",
+        "misty green mountains at sunrise cinematic motion",
+        "misty green mountains at sunrise scenic view",
+        "misty green mountains at sunrise soft light nature",
+        "misty green mountains at sunrise beautiful landscape",
+        "misty green mountains at sunrise dramatic nature",
+        "misty green mountains at sunrise vertical nature",
+        "misty green mountains at sunrise peaceful scenery",
+        "misty green mountains at sunrise serene landscape",
+        "misty green mountains at sunrise sunset nature calm"
+      ],
+      "music_source": "freesound",
+      "music_title": "Tranquil Nature Soundscape",
+      "music_license": "https://creativecommons.org/licenses/by/4.0/",
+      "caption": "A quiet journey through nature. Misty Green Mountains At Sunrise. Take three minutes of stillness with ObetyPl.",
+      "hashtags": [
+        "#Nature",
+        "#Scenic",
+        "#Peaceful",
+        "#ObetyPl",
+        "#Mindfulness"
+      ],
+      "status": "ready",
+      "quality_overall": "pass",
+      "output_file": "ObetyPl_20261020_054540_Misty_Green_Mountains_At_Sunrise.mp4",
+      "selection_reason": "Deterministic fallback plan (AI unavailable or invalid response)",
+      "recorded_at_utc": "2026-10-20T05:51:12.780795+00:00"
     }
   ]
 }
