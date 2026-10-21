@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at_utc": "2026-10-20T05:51:12.780824+00:00",
+  "updated_at_utc": "2026-10-21T05:55:44.387232+00:00",
   "entries": [
     {
       "content_id": "obetypl-abc039fcbb54",
@@ -330,6 +330,57 @@
       "output_file": "ObetyPl_20261020_054540_Misty_Green_Mountains_At_Sunrise.mp4",
       "selection_reason": "Deterministic fallback plan (AI unavailable or invalid response)",
       "recorded_at_utc": "2026-10-20T05:51:12.780795+00:00"
+    },
+    {
+      "content_id": "obetypl-72e929746545",
+      "created_at_utc": "2026-10-21T05:49:47.270980+00:00",
+      "date": "2026-10-21",
+      "concept": "Tropical rainforest immersion",
+      "title": "Rainforest Reverie",
+      "main_theme": "Calming, awe-inspiring",
+      "scene_descriptions": [
+        "Golden shafts piercing misty green",
+        "Wide view of towering trees",
+        "Close‑up of water droplets glistening",
+        "Mist rising from forest floor",
+        "Perspective through mossy roots",
+        "Leaves swaying in gentle breeze",
+        "Vibrant green illuminated by light",
+        "Water cascading into pool",
+        "Wide shot of cascading water",
+        "Misty spray from waterfall",
+        "Quiet pool reflecting canopy",
+        "Golden sunset filtering through leaves"
+      ],
+      "search_terms": [
+        "tropical rainforest canopy light",
+        "tropical rainforest canopy wide view",
+        "tropical rainforest vines water droplets",
+        "tropical rainforest morning mist",
+        "tropical rainforest moss close up",
+        "tropical rainforest leaves rustling",
+        "tropical rainforest sunlit green",
+        "tropical rainforest waterfall",
+        "tropical rainforest waterfall wide view",
+        "tropical rainforest waterfall mist",
+        "tropical rainforest pool reflection",
+        "tropical rainforest sunset light"
+      ],
+      "music_source": "freesound",
+      "music_title": "Ambient Wave 26",
+      "music_license": "https://creativecommons.org/licenses/by/4.0/",
+      "caption": "Step into a rainforest where light dances through leaves, mist rises, and a hidden waterfall whispers calm. Each frame invites a pause, a breath, and a quiet awe of nature’s quiet power.",
+      "hashtags": [
+        "#Rainforest",
+        "#Nature",
+        "#Mindfulness",
+        "#ObetyPl"
+      ],
+      "status": "ready",
+      "quality_overall": "pass",
+      "output_file": "ObetyPl_20261021_054947_Rainforest_Reverie.mp4",
+      "selection_reason": "Unique tropical atmosphere",
+      "recorded_at_utc": "2026-10-21T05:55:44.387205+00:00"
     }
   ]
 }
