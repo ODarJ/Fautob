@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at_utc": "2026-10-22T05:59:19.536557+00:00",
+  "updated_at_utc": "2026-10-23T05:55:59.973169+00:00",
   "entries": [
     {
       "content_id": "obetypl-abc039fcbb54",
@@ -433,6 +433,58 @@
       "output_file": "ObetyPl_20261022_055210_Waterfall_In_A_Lush_Forest.mp4",
       "selection_reason": "Deterministic fallback plan (AI unavailable or invalid response)",
       "recorded_at_utc": "2026-10-22T05:59:19.536526+00:00"
+    },
+    {
+      "content_id": "obetypl-20261023-36942924",
+      "created_at_utc": "2026-10-23T05:50:43.264239+00:00",
+      "date": "2026-10-23",
+      "concept": "waterfall in a lush forest",
+      "title": "Waterfall In A Lush Forest",
+      "main_theme": "peaceful, cinematic, reflective",
+      "scene_descriptions": [
+        "Immediate visual hook: soft light revealing waterfall in a lush forest",
+        "Wide establishing view of waterfall in a lush forest, natural movement",
+        "Closer atmospheric detail within waterfall in a lush forest",
+        "Gentle natural movement in waterfall in a lush forest",
+        "Different perspective of waterfall in a lush forest",
+        "Immersive texture and light of waterfall in a lush forest",
+        "Rich visual moment in waterfall in a lush forest",
+        "Central scenic highlight of waterfall in a lush forest",
+        "Shifted composition of waterfall in a lush forest",
+        "Calm immersive moment in waterfall in a lush forest",
+        "Quiet transition toward resolution of waterfall in a lush forest",
+        "Memorable closing image of waterfall in a lush forest"
+      ],
+      "search_terms": [
+        "waterfall in a lush forest",
+        "waterfall in a lush forest landscape wide",
+        "waterfall in a lush forest nature detail",
+        "waterfall in a lush forest cinematic motion",
+        "waterfall in a lush forest scenic view",
+        "waterfall in a lush forest soft light nature",
+        "waterfall in a lush forest beautiful landscape",
+        "waterfall in a lush forest dramatic nature",
+        "waterfall in a lush forest vertical nature",
+        "waterfall in a lush forest peaceful scenery",
+        "waterfall in a lush forest serene landscape",
+        "waterfall in a lush forest sunset nature calm"
+      ],
+      "music_source": "freesound",
+      "music_title": "Tranquil Nature Soundscape",
+      "music_license": "https://creativecommons.org/licenses/by/4.0/",
+      "caption": "A quiet journey through nature. Waterfall In A Lush Forest. Take three minutes of stillness with ObetyPl.",
+      "hashtags": [
+        "#Nature",
+        "#Scenic",
+        "#Peaceful",
+        "#ObetyPl",
+        "#Mindfulness"
+      ],
+      "status": "ready",
+      "quality_overall": "pass",
+      "output_file": "ObetyPl_20261023_055043_Waterfall_In_A_Lush_Forest.mp4",
+      "selection_reason": "Deterministic fallback plan (AI unavailable or invalid response)",
+      "recorded_at_utc": "2026-10-23T05:55:59.973147+00:00"
     }
   ]
 }
