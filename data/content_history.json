@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at_utc": "2026-10-27T06:10:35.697571+00:00",
+  "updated_at_utc": "2026-10-28T06:48:56.926613+00:00",
   "entries": [
     {
       "content_id": "obetypl-abc039fcbb54",
@@ -689,6 +689,58 @@
       "output_file": "ObetyPl_20261027_060508_Peaceful_Forest_After_Rain.mp4",
       "selection_reason": "Deterministic fallback plan (AI unavailable or invalid response)",
       "recorded_at_utc": "2026-10-27T06:10:35.697542+00:00"
+    },
+    {
+      "content_id": "obetypl-20261028-17cc8c05",
+      "created_at_utc": "2026-10-28T06:43:30.169434+00:00",
+      "date": "2026-10-28",
+      "concept": "lake reflecting distant mountains",
+      "title": "Lake Reflecting Distant Mountains",
+      "main_theme": "peaceful, cinematic, reflective",
+      "scene_descriptions": [
+        "Immediate visual hook: soft light revealing lake reflecting distant mountains",
+        "Wide establishing view of lake reflecting distant mountains, natural movement",
+        "Closer atmospheric detail within lake reflecting distant mountains",
+        "Gentle natural movement in lake reflecting distant mountains",
+        "Different perspective of lake reflecting distant mountains",
+        "Immersive texture and light of lake reflecting distant mountains",
+        "Rich visual moment in lake reflecting distant mountains",
+        "Central scenic highlight of lake reflecting distant mountains",
+        "Shifted composition of lake reflecting distant mountains",
+        "Calm immersive moment in lake reflecting distant mountains",
+        "Quiet transition toward resolution of lake reflecting distant mountains",
+        "Memorable closing image of lake reflecting distant mountains"
+      ],
+      "search_terms": [
+        "lake reflecting distant mountains",
+        "lake reflecting distant mountains landscape wide",
+        "lake reflecting distant mountains nature detail",
+        "lake reflecting distant mountains cinematic motion",
+        "lake reflecting distant mountains scenic view",
+        "lake reflecting distant mountains soft light nature",
+        "lake reflecting distant mountains beautiful landscape",
+        "lake reflecting distant mountains dramatic nature",
+        "lake reflecting distant mountains vertical nature",
+        "lake reflecting distant mountains peaceful scenery",
+        "lake reflecting distant mountains serene landscape",
+        "lake reflecting distant mountains sunset nature calm"
+      ],
+      "music_source": "freesound",
+      "music_title": "Tranquil Nature Soundscape",
+      "music_license": "https://creativecommons.org/licenses/by/4.0/",
+      "caption": "A quiet journey through nature. Lake Reflecting Distant Mountains. Take three minutes of stillness with ObetyPl.",
+      "hashtags": [
+        "#Nature",
+        "#Scenic",
+        "#Peaceful",
+        "#ObetyPl",
+        "#Mindfulness"
+      ],
+      "status": "ready",
+      "quality_overall": "pass",
+      "output_file": "ObetyPl_20261028_064330_Lake_Reflecting_Distant_Mountains.mp4",
+      "selection_reason": "Deterministic fallback plan (AI unavailable or invalid response)",
+      "recorded_at_utc": "2026-10-28T06:48:56.926591+00:00"
     }
   ]
 }
