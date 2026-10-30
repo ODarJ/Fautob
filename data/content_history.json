@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at_utc": "2026-10-29T06:54:33.679284+00:00",
+  "updated_at_utc": "2026-10-30T06:59:01.938487+00:00",
   "entries": [
     {
       "content_id": "obetypl-abc039fcbb54",
@@ -793,6 +793,58 @@
       "output_file": "ObetyPl_20261029_065041_Rolling_Green_Hills_Beneath_Dramatic_Clouds.mp4",
       "selection_reason": "Deterministic fallback plan (AI unavailable or invalid response)",
       "recorded_at_utc": "2026-10-29T06:54:33.679261+00:00"
+    },
+    {
+      "content_id": "obetypl-20261030-4f8e6803",
+      "created_at_utc": "2026-10-30T06:54:51.749332+00:00",
+      "date": "2026-10-30",
+      "concept": "rolling green hills beneath dramatic clouds",
+      "title": "Rolling Green Hills Beneath Dramatic Clouds",
+      "main_theme": "peaceful, cinematic, reflective",
+      "scene_descriptions": [
+        "Immediate visual hook: soft light revealing rolling green hills beneath dramatic clouds",
+        "Wide establishing view of rolling green hills beneath dramatic clouds, natural movement",
+        "Closer atmospheric detail within rolling green hills beneath dramatic clouds",
+        "Gentle natural movement in rolling green hills beneath dramatic clouds",
+        "Different perspective of rolling green hills beneath dramatic clouds",
+        "Immersive texture and light of rolling green hills beneath dramatic clouds",
+        "Rich visual moment in rolling green hills beneath dramatic clouds",
+        "Central scenic highlight of rolling green hills beneath dramatic clouds",
+        "Shifted composition of rolling green hills beneath dramatic clouds",
+        "Calm immersive moment in rolling green hills beneath dramatic clouds",
+        "Quiet transition toward resolution of rolling green hills beneath dramatic clouds",
+        "Memorable closing image of rolling green hills beneath dramatic clouds"
+      ],
+      "search_terms": [
+        "rolling green hills beneath dramatic clouds",
+        "rolling green hills beneath dramatic clouds landscape wide",
+        "rolling green hills beneath dramatic clouds nature detail",
+        "rolling green hills beneath dramatic clouds cinematic motion",
+        "rolling green hills beneath dramatic clouds scenic view",
+        "rolling green hills beneath dramatic clouds soft light nature",
+        "rolling green hills beneath dramatic clouds beautiful landscape",
+        "rolling green hills beneath dramatic clouds dramatic nature",
+        "rolling green hills beneath dramatic clouds vertical nature",
+        "rolling green hills beneath dramatic clouds peaceful scenery",
+        "rolling green hills beneath dramatic clouds serene landscape",
+        "rolling green hills beneath dramatic clouds sunset nature calm"
+      ],
+      "music_source": "freesound",
+      "music_title": "Tranquil Nature Soundscape",
+      "music_license": "https://creativecommons.org/licenses/by/4.0/",
+      "caption": "A quiet journey through nature. Rolling Green Hills Beneath Dramatic Clouds. Take three minutes of stillness with ObetyPl.",
+      "hashtags": [
+        "#Nature",
+        "#Scenic",
+        "#Peaceful",
+        "#ObetyPl",
+        "#Mindfulness"
+      ],
+      "status": "ready",
+      "quality_overall": "pass",
+      "output_file": "ObetyPl_20261030_065451_Rolling_Green_Hills_Beneath_Dramatic_Clouds.mp4",
+      "selection_reason": "Deterministic fallback plan (AI unavailable or invalid response)",
+      "recorded_at_utc": "2026-10-30T06:59:01.938462+00:00"
     }
   ]
 }
