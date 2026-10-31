@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at_utc": "2026-10-30T06:59:01.938487+00:00",
+  "updated_at_utc": "2026-10-31T06:52:33.239047+00:00",
   "entries": [
     {
       "content_id": "obetypl-abc039fcbb54",
@@ -845,6 +845,58 @@
       "output_file": "ObetyPl_20261030_065451_Rolling_Green_Hills_Beneath_Dramatic_Clouds.mp4",
       "selection_reason": "Deterministic fallback plan (AI unavailable or invalid response)",
       "recorded_at_utc": "2026-10-30T06:59:01.938462+00:00"
+    },
+    {
+      "content_id": "obetypl-b166656b4fb3",
+      "created_at_utc": "2026-10-31T06:47:39.492135+00:00",
+      "date": "2026-10-31",
+      "concept": "Mist-kissed Dawn at Alpine Lake",
+      "title": "Alpine Dawn Mist",
+      "main_theme": "Serene, uplifting",
+      "scene_descriptions": [
+        "Soft mist lifting from the lake surface",
+        "Wide shot of the lake surrounded by pine trees",
+        "Close-up of water droplets on leaf",
+        "Low-angle fog drifting across grass",
+        "Pan from lake to distant snow peaks",
+        "Bird gliding over the lake",
+        "Sunlight piercing mist with golden hue",
+        "Lake reflecting the sky and mountains",
+        "Tilt from horizon to close-up of ripple",
+        "Silence with distant bird call",
+        "Sun fully risen over peaks",
+        "Last ripple before daybreak"
+      ],
+      "search_terms": [
+        "misty alpine lake sunrise",
+        "alpine lake wide view",
+        "water droplets leaf closeup",
+        "morning fog low angle",
+        "mountain peaks panorama",
+        "bird glide over water",
+        "sunrise mist golden glow",
+        "lake reflection sunrise",
+        "vertical tilt water ripple",
+        "quiet nature sound",
+        "sunrise over mountain peaks",
+        "lake ripple at dawn"
+      ],
+      "music_source": "freesound",
+      "music_title": "Calm Ambient Music for Meditation",
+      "music_license": "https://creativecommons.org/licenses/by/4.0/",
+      "caption": "From misty ripples to golden sunrise, this alpine lake invites calm and awe. #ObetyPl",
+      "hashtags": [
+        "#Nature",
+        "#Alpine",
+        "#Morning",
+        "#Tranquility",
+        "#ObetyPl"
+      ],
+      "status": "ready",
+      "quality_overall": "pass",
+      "output_file": "ObetyPl_20261031_064739_Alpine_Dawn_Mist.mp4",
+      "selection_reason": "Unique misty lake, soothing progression",
+      "recorded_at_utc": "2026-10-31T06:52:33.239024+00:00"
     }
   ]
 }
