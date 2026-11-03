@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at_utc": "2026-11-02T07:35:31.879309+00:00",
+  "updated_at_utc": "2026-11-03T07:50:08.880787+00:00",
   "entries": [
     {
       "content_id": "obetypl-abc039fcbb54",
@@ -1001,6 +1001,56 @@
       "output_file": "ObetyPl_20261102_073009_Rolling_Green_Hills_Beneath_Dramatic_Clouds.mp4",
       "selection_reason": "Deterministic fallback plan (AI unavailable or invalid response)",
       "recorded_at_utc": "2026-11-02T07:35:31.879281+00:00"
+    },
+    {
+      "content_id": "obetypl-a76d971dbb77",
+      "created_at_utc": "2026-11-03T07:43:13.995284+00:00",
+      "date": "2026-11-03",
+      "concept": "Misty Dawn at Sea Cliff",
+      "title": "Cliff Mist Dawn",
+      "main_theme": "Serene",
+      "scene_descriptions": [
+        "First 15s show mist swirling over cliff edges at sunrise",
+        "Wide shot of cliffs with waves crashing below",
+        "Close‑up of spray from waves hitting rocks",
+        "Thick mist envelops the lower cliffs",
+        "Foamy waves at the shoreline from a low angle",
+        "Dynamic movement of waves striking the rocks",
+        "Sunlight pierces mist, creating golden shafts",
+        "A solitary rock stands out in the mist",
+        "Camera slowly pans across the cliffs",
+        "Soft, steady waves create a calm rhythm",
+        "Sun fully emerges over horizon, lighting cliffs",
+        "Final frame shows horizon with fading mist"
+      ],
+      "search_terms": [
+        "misty sea cliff dawn",
+        "sea cliffs wide shot dawn",
+        "sea spray close up",
+        "mist over sea cliffs",
+        "waves foam close up",
+        "waves crashing cliff",
+        "sun rays misty sea",
+        "rock protrusion cliff mist",
+        "slow pan sea cliffs",
+        "gentle waves sea",
+        "sunrise over sea cliffs",
+        "horizon line sea cliffs"
+      ],
+      "music_source": "freesound",
+      "music_title": "Adventure theme #9",
+      "music_license": "https://creativecommons.org/licenses/by/4.0/",
+      "caption": "Begin your day with misty cliffs at dawn, where waves whisper and sunlight pierces the veil.",
+      "hashtags": [
+        "#CliffMist",
+        "#DawnSerenity",
+        "#ObetyPl"
+      ],
+      "status": "ready",
+      "quality_overall": "pass",
+      "output_file": "ObetyPl_20261103_074313_Cliff_Mist_Dawn.mp4",
+      "selection_reason": "Provides a fresh, misty coastal experience distinct from recent forest and waterfall themes",
+      "recorded_at_utc": "2026-11-03T07:50:08.880759+00:00"
     }
   ]
 }
