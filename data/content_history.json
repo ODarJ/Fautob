@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at_utc": "2026-11-04T07:26:56.078012+00:00",
+  "updated_at_utc": "2026-11-05T07:55:07.131497+00:00",
   "entries": [
     {
       "content_id": "obetypl-abc039fcbb54",
@@ -1103,6 +1103,57 @@
       "output_file": "ObetyPl_20261104_072208_Snow-Capped_Peaks_Under_Soft_Light.mp4",
       "selection_reason": "Deterministic fallback plan (AI unavailable or invalid response)",
       "recorded_at_utc": "2026-11-04T07:26:56.077981+00:00"
+    },
+    {
+      "content_id": "obetypl-045cde55a726",
+      "created_at_utc": "2026-11-05T07:48:06.233607+00:00",
+      "date": "2026-11-05",
+      "concept": "Coastal Cliff Serenity",
+      "title": "Waves & Mist",
+      "main_theme": "Calm",
+      "scene_descriptions": [
+        "Close‑up of foamy waves hitting cliff edge",
+        "Panoramic shot of cliffs and sea",
+        "Macro of sea foam and spray",
+        "Soft mist hovering over cliffs",
+        "Aerial view of cliff line",
+        "Birds gliding above sea",
+        "Sunlight gilding the waves",
+        "Lighthouse silhouetted against sky",
+        "Slow horizontal pan across cliffs",
+        "Gentle rolling waves",
+        "Clouds reflected in water",
+        "Sunset behind cliffs"
+      ],
+      "search_terms": [
+        "coastal cliff waves",
+        "coastal cliffs sea view",
+        "sea foam closeup",
+        "morning fog cliffs",
+        "drone cliff view",
+        "gulls flying over sea",
+        "sunrise over sea",
+        "lighthouse at sea",
+        "slow pan cliff",
+        "gentle waves",
+        "clouds reflection water",
+        "sunset cliff silhouette"
+      ],
+      "music_source": "freesound",
+      "music_title": "Adventure theme #9",
+      "music_license": "https://creativecommons.org/licenses/by/4.0/",
+      "caption": "Feel the hush of waves meeting mist on towering cliffs, a moment of pure serenity. 180 seconds of calm, captured in vertical frame.",
+      "hashtags": [
+        "#ObetyPl",
+        "#CoastalCliff",
+        "#NatureVideo",
+        "#MindfulMoments"
+      ],
+      "status": "ready",
+      "quality_overall": "pass",
+      "output_file": "ObetyPl_20261105_074806_Waves_Mist.mp4",
+      "selection_reason": "Unique coastal landscape, soothing audio-visual harmony",
+      "recorded_at_utc": "2026-11-05T07:55:07.131477+00:00"
     }
   ]
 }
