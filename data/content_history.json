@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at_utc": "2026-11-07T07:00:06.185408+00:00",
+  "updated_at_utc": "2026-11-08T07:06:12.078465+00:00",
   "entries": [
     {
       "content_id": "obetypl-abc039fcbb54",
@@ -1258,6 +1258,57 @@
       "output_file": "ObetyPl_20261107_065432_Peaceful_Forest_After_Rain.mp4",
       "selection_reason": "Deterministic fallback plan (AI unavailable or invalid response)",
       "recorded_at_utc": "2026-11-07T07:00:06.185380+00:00"
+    },
+    {
+      "content_id": "obetypl-a13a1ef57777",
+      "created_at_utc": "2026-11-08T07:00:44.975577+00:00",
+      "date": "2026-11-08",
+      "concept": "Tropical rainforest canopy at dawn, mist and light",
+      "title": "Morning Mist Canopy",
+      "main_theme": "peaceful",
+      "scene_descriptions": [
+        "Close-up of mist rising from leaves at dawn",
+        "Wide shot of lush canopy stretching far",
+        "Detail of light filtering through leaf veins",
+        "Close-up of dew on ferns in early light",
+        "Aerial view from above the canopy",
+        "Leaves swaying gently in a breeze",
+        "A small waterfall hidden within canopy",
+        "Sunlight piercing through canopy at sunrise",
+        "Smooth pan across dense green foliage",
+        "Gentle wind creating subtle ripples",
+        "A tranquil clearing bathed in early sun",
+        "Sunrise silhouette against canopy backdrop"
+      ],
+      "search_terms": [
+        "tropical rainforest canopy mist morning",
+        "tropical rainforest canopy panorama",
+        "rainforest leaf veins morning light",
+        "rainforest fern dewdrops",
+        "rainforest canopy aerial view",
+        "rainforest leaves breeze",
+        "rainforest waterfall hidden",
+        "rainforest sunrise through canopy",
+        "rainforest canopy pan shot",
+        "rainforest wind leaves",
+        "rainforest clearing sunrise",
+        "rainforest sunrise silhouette"
+      ],
+      "music_source": "freesound",
+      "music_title": "Ethereal Voices.mp3",
+      "music_license": "http://creativecommons.org/publicdomain/zero/1.0/",
+      "caption": "Wake up to the gentle mist and golden light of a rainforest canopy at dawn, where every leaf whispers tranquility.",
+      "hashtags": [
+        "#ObetyPl",
+        "#Nature",
+        "#Rainforest",
+        "#MorningLight"
+      ],
+      "status": "ready",
+      "quality_overall": "pass",
+      "output_file": "ObetyPl_20261108_070044_Morning_Mist_Canopy.mp4",
+      "selection_reason": "Unique tropical canopy, calm and inspiring",
+      "recorded_at_utc": "2026-11-08T07:06:12.078435+00:00"
     }
   ]
 }
