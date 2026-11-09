@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at_utc": "2026-11-08T07:06:12.078465+00:00",
+  "updated_at_utc": "2026-11-09T07:48:11.269531+00:00",
   "entries": [
     {
       "content_id": "obetypl-abc039fcbb54",
@@ -1309,6 +1309,58 @@
       "output_file": "ObetyPl_20261108_070044_Morning_Mist_Canopy.mp4",
       "selection_reason": "Unique tropical canopy, calm and inspiring",
       "recorded_at_utc": "2026-11-08T07:06:12.078435+00:00"
+    },
+    {
+      "content_id": "obetypl-20261109-be96abe3",
+      "created_at_utc": "2026-11-09T07:44:39.093549+00:00",
+      "date": "2026-11-09",
+      "concept": "snow-capped peaks under soft light",
+      "title": "Snow-Capped Peaks Under Soft Light",
+      "main_theme": "peaceful, cinematic, reflective",
+      "scene_descriptions": [
+        "Immediate visual hook: soft light revealing snow-capped peaks under soft light",
+        "Wide establishing view of snow-capped peaks under soft light, natural movement",
+        "Closer atmospheric detail within snow-capped peaks under soft light",
+        "Gentle natural movement in snow-capped peaks under soft light",
+        "Different perspective of snow-capped peaks under soft light",
+        "Immersive texture and light of snow-capped peaks under soft light",
+        "Rich visual moment in snow-capped peaks under soft light",
+        "Central scenic highlight of snow-capped peaks under soft light",
+        "Shifted composition of snow-capped peaks under soft light",
+        "Calm immersive moment in snow-capped peaks under soft light",
+        "Quiet transition toward resolution of snow-capped peaks under soft light",
+        "Memorable closing image of snow-capped peaks under soft light"
+      ],
+      "search_terms": [
+        "snow-capped peaks under soft light",
+        "snow-capped peaks under soft light landscape wide",
+        "snow-capped peaks under soft light nature detail",
+        "snow-capped peaks under soft light cinematic motion",
+        "snow-capped peaks under soft light scenic view",
+        "snow-capped peaks under soft light soft light nature",
+        "snow-capped peaks under soft light beautiful landscape",
+        "snow-capped peaks under soft light dramatic nature",
+        "snow-capped peaks under soft light vertical nature",
+        "snow-capped peaks under soft light peaceful scenery",
+        "snow-capped peaks under soft light serene landscape",
+        "snow-capped peaks under soft light sunset nature calm"
+      ],
+      "music_source": "freesound",
+      "music_title": "Tranquil Nature Soundscape",
+      "music_license": "https://creativecommons.org/licenses/by/4.0/",
+      "caption": "A quiet journey through nature. Snow-Capped Peaks Under Soft Light. Take three minutes of stillness with ObetyPl.",
+      "hashtags": [
+        "#Nature",
+        "#Scenic",
+        "#Peaceful",
+        "#ObetyPl",
+        "#Mindfulness"
+      ],
+      "status": "ready",
+      "quality_overall": "pass",
+      "output_file": "ObetyPl_20261109_074439_Snow-Capped_Peaks_Under_Soft_Light.mp4",
+      "selection_reason": "Deterministic fallback plan (AI unavailable or invalid response)",
+      "recorded_at_utc": "2026-11-09T07:48:11.269505+00:00"
     }
   ]
 }
