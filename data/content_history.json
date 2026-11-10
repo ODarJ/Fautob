@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at_utc": "2026-11-09T07:48:11.269531+00:00",
+  "updated_at_utc": "2026-11-10T08:11:11.292326+00:00",
   "entries": [
     {
       "content_id": "obetypl-abc039fcbb54",
@@ -1361,6 +1361,56 @@
       "output_file": "ObetyPl_20261109_074439_Snow-Capped_Peaks_Under_Soft_Light.mp4",
       "selection_reason": "Deterministic fallback plan (AI unavailable or invalid response)",
       "recorded_at_utc": "2026-11-09T07:48:11.269505+00:00"
+    },
+    {
+      "content_id": "obetypl-9db232a70811",
+      "created_at_utc": "2026-11-10T08:06:28.738211+00:00",
+      "date": "2026-11-10",
+      "concept": "A mist-enshrouded valley at dawn, inviting viewers into a quiet, contemplative forest.",
+      "title": "Misty Mountain Valley",
+      "main_theme": "serene",
+      "scene_descriptions": [
+        "A dense mist curls around towering pine trees, creating a soft, ethereal veil.",
+        "Wide shot of the valley, revealing the expanse of mist‑covered forest.",
+        "Close‑up of pine needles glistening with dew.",
+        "Soft rays penetrate the mist, creating golden shafts through the trees.",
+        "A slow‑moving river mirrors the misty canopy above.",
+        "Rolling fog drifts across a distant ridge, adding depth.",
+        "Leaves flutter lightly, catching the early light.",
+        "Distant peaks emerge as dark silhouettes against the sky.",
+        "A path winds through the forest, inviting the viewer to follow.",
+        "A tranquil pond reflects the mist and trees.",
+        "Light gradually pierces the mist, brightening the scene.",
+        "The mist slowly lifts, revealing a clear sky."
+      ],
+      "search_terms": [
+        "misty pine forest dawn",
+        "panoramic mist forest valley",
+        "pine needles dew close up",
+        "sunlight through mist forest",
+        "river mist reflection",
+        "fog rolling over ridge",
+        "pine leaves fluttering light",
+        "mountain peak silhouette dawn",
+        "forest path low angle",
+        "pond reflection mist forest",
+        "dawn breaking through mist",
+        "mist lifting forest"
+      ],
+      "music_source": "freesound",
+      "music_title": "Adventure theme #9",
+      "music_license": "https://creativecommons.org/licenses/by/4.0/",
+      "caption": "Step into a mist‑covered pine valley at dawn, where light, water, and quiet moments weave a tapestry of serenity.",
+      "hashtags": [
+        "#Nature",
+        "#Mindfulness",
+        "#ObetyPl"
+      ],
+      "status": "ready",
+      "quality_overall": "pass",
+      "output_file": "ObetyPl_20261110_080628_Misty_Mountain_Valley.mp4",
+      "selection_reason": "The gradual reveal of light and mist creates a tranquil journey perfect for mindfulness viewing.",
+      "recorded_at_utc": "2026-11-10T08:11:11.292305+00:00"
     }
   ]
 }
