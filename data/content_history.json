@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at_utc": "2026-11-21T08:11:46.066149+00:00",
+  "updated_at_utc": "2026-11-22T07:58:28.241555+00:00",
   "entries": [
     {
       "content_id": "obetypl-abc039fcbb54",
@@ -1983,6 +1983,56 @@
       "output_file": "ObetyPl_20261121_080610_Lake_Reflecting_Distant_Mountains.mp4",
       "selection_reason": "Deterministic fallback plan (AI unavailable or invalid response)",
       "recorded_at_utc": "2026-11-21T08:11:46.066119+00:00"
+    },
+    {
+      "content_id": "obetypl-5213d8957201",
+      "created_at_utc": "2026-11-22T07:52:02.630233+00:00",
+      "date": "2026-11-22",
+      "concept": "Tranquil fjord sunrise",
+      "title": "Sunlit Fjord Serenity",
+      "main_theme": "serene",
+      "scene_descriptions": [
+        "Mist swirling over calm fjord",
+        "Panoramic view of towering cliffs",
+        "Close‑up of droplets on pine needles",
+        "Fog rolling across water",
+        "Overhead shot of fjord and islands",
+        "Gulls gliding over the water",
+        "Jagged rocks jutting into sky",
+        "Old lighthouse on cliffside",
+        "Camera glides along shoreline",
+        "Mirror‑like water reflecting sky",
+        "Sunrise paints horizon with gold",
+        "Fjord recedes into distant horizon"
+      ],
+      "search_terms": [
+        "fjord sunrise mist",
+        "fjord wide shot",
+        "water droplets pine",
+        "fog rolling in water",
+        "aerial fjord",
+        "seagull flight",
+        "rock formations fjord",
+        "lighthouse fjord",
+        "shoreline tracking",
+        "still water reflection",
+        "sunrise glow fjord",
+        "fjord horizon line"
+      ],
+      "music_source": "freesound",
+      "music_title": "Adventure theme #9",
+      "music_license": "https://creativecommons.org/licenses/by/4.0/",
+      "caption": "Experience a sunrise over a misty fjord, where each wave and rock reflects the quiet promise of a new day.",
+      "hashtags": [
+        "#Nature",
+        "#Calm",
+        "#ObetyPl"
+      ],
+      "status": "ready",
+      "quality_overall": "pass",
+      "output_file": "ObetyPl_20261122_075202_Sunlit_Fjord_Serenity.mp4",
+      "selection_reason": "Unique landscape, emotional arc",
+      "recorded_at_utc": "2026-11-22T07:58:28.241527+00:00"
     }
   ]
 }
