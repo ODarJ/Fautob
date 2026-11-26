@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at_utc": "2026-11-25T09:44:52.307213+00:00",
+  "updated_at_utc": "2026-11-26T09:22:02.912640+00:00",
   "entries": [
     {
       "content_id": "obetypl-abc039fcbb54",
@@ -2189,6 +2189,58 @@
       "output_file": "ObetyPl_20261125_094031_Quiet_Tropical_Beach_At_Golden_Hour.mp4",
       "selection_reason": "Deterministic fallback plan (AI unavailable or invalid response)",
       "recorded_at_utc": "2026-11-25T09:44:52.307184+00:00"
+    },
+    {
+      "content_id": "obetypl-20261126-8d4b5a26",
+      "created_at_utc": "2026-11-26T09:16:09.482547+00:00",
+      "date": "2026-11-26",
+      "concept": "quiet tropical beach at golden hour",
+      "title": "Quiet Tropical Beach At Golden Hour",
+      "main_theme": "peaceful, cinematic, reflective",
+      "scene_descriptions": [
+        "Immediate visual hook: soft light revealing quiet tropical beach at golden hour",
+        "Wide establishing view of quiet tropical beach at golden hour, natural movement",
+        "Closer atmospheric detail within quiet tropical beach at golden hour",
+        "Gentle natural movement in quiet tropical beach at golden hour",
+        "Different perspective of quiet tropical beach at golden hour",
+        "Immersive texture and light of quiet tropical beach at golden hour",
+        "Rich visual moment in quiet tropical beach at golden hour",
+        "Central scenic highlight of quiet tropical beach at golden hour",
+        "Shifted composition of quiet tropical beach at golden hour",
+        "Calm immersive moment in quiet tropical beach at golden hour",
+        "Quiet transition toward resolution of quiet tropical beach at golden hour",
+        "Memorable closing image of quiet tropical beach at golden hour"
+      ],
+      "search_terms": [
+        "quiet tropical beach at golden hour",
+        "quiet tropical beach at golden hour landscape wide",
+        "quiet tropical beach at golden hour nature detail",
+        "quiet tropical beach at golden hour cinematic motion",
+        "quiet tropical beach at golden hour scenic view",
+        "quiet tropical beach at golden hour soft light nature",
+        "quiet tropical beach at golden hour beautiful landscape",
+        "quiet tropical beach at golden hour dramatic nature",
+        "quiet tropical beach at golden hour vertical nature",
+        "quiet tropical beach at golden hour peaceful scenery",
+        "quiet tropical beach at golden hour serene landscape",
+        "quiet tropical beach at golden hour sunset nature calm"
+      ],
+      "music_source": "freesound",
+      "music_title": "Tranquil Nature Soundscape",
+      "music_license": "https://creativecommons.org/licenses/by/4.0/",
+      "caption": "A quiet journey through nature. Quiet Tropical Beach At Golden Hour. Take three minutes of stillness with ObetyPl.",
+      "hashtags": [
+        "#Nature",
+        "#Scenic",
+        "#Peaceful",
+        "#ObetyPl",
+        "#Mindfulness"
+      ],
+      "status": "ready",
+      "quality_overall": "pass",
+      "output_file": "ObetyPl_20261126_091609_Quiet_Tropical_Beach_At_Golden_Hour.mp4",
+      "selection_reason": "Deterministic fallback plan (AI unavailable or invalid response)",
+      "recorded_at_utc": "2026-11-26T09:22:02.912608+00:00"
     }
   ]
 }
